@@ -13,6 +13,13 @@ const btnConnexion = document.querySelector(".btn-connexion");
 const formInscription = document.querySelector(".formulaire-inscription");
 const formConnexion = document.querySelector(".formulaire-connexion");
 
+const showSecInscription = document.querySelector("#show-sec-inscription");
+const showSecConnexion = document.querySelector("#show-sec-connexion");
+const secInscription = document.querySelector(".inscription-sec");
+const secConnexion = document.querySelector(".connexion-sec");
+
+const dashboard = document.querySelector(".dashboard");
+
 const formStateInscription = {
   name: false,
   email: false,
@@ -123,8 +130,7 @@ function initFormInscription() {
 
   formInscription.addEventListener("submit", (e) => {
     e.preventDefault();
-    createUser();
-    const texBtn = document.querySelector(".btn-inscription .text-btn")
+    let texBtn = document.querySelector(".btn-inscription .text-btn")
     texBtn.textContent = "Creation en cours...";
     btnInscription.disabled = true;
 
@@ -132,9 +138,11 @@ function initFormInscription() {
 
       if( validateEmail() ){
         createPopUp("inscription réussie", "popUpValid");
-        formInscription.reset();
         secInscription.classList.add('secInscriptionInvisible');
         secInscription.classList.remove('secInscriptionVisible');
+        dashboard.classList.add("showDashboard")
+        createUser();
+        formInscription.reset();
       }else{
         createPopUp("Cet email a déjà été utilisée", "popUpInvalid");
       }
@@ -209,7 +217,7 @@ function initFormConnexion() {
 
   formConnexion.addEventListener("submit", (e) => {
     e.preventDefault();
-    const textBtn = document.querySelector(".btn-connexion .text-btn"); 
+    let textBtn = document.querySelector(".btn-connexion .text-btn"); 
     textBtn.textContent = "Connexion en cours...";
     btnConnexion.disabled = true;
     setTimeout(() =>{
@@ -217,6 +225,7 @@ function initFormConnexion() {
         createPopUp("connexion réussie", "popUpValid");
         secConnexion.classList.remove('secConnexionVisible');
         secConnexion.classList.add('secConnexionInvisible');
+        dashboard.classList.add("showDashboard")
       } else {
         createPopUp("Aucun compte trouvé, veuillez ressayer", "popUpInvalid");
       }

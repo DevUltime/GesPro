@@ -1,11 +1,12 @@
 "use strict";
+
 const showSecInscription = document.querySelector("#show-sec-inscription");
 const showSecConnexion = document.querySelector("#show-sec-connexion");
 const secInscription = document.querySelector(".inscription-sec");
 const secConnexion = document.querySelector(".connexion-sec");
 
 secConnexion.classList.add("secConnexionInvisible");
-secInscription.classList.add("secInscriptionInvisible");
+secInscription.classList.add("secInscriptionVisible");
 
 //afficher et masquer les sections inscription et connexion
 showSecConnexion.addEventListener("click", () => {
@@ -63,12 +64,65 @@ document.addEventListener("click", (e) => {
   }
 });
 
-//afficher et masquer les sections de l'aside
+//affichage du chart dans le canvas
+const myChartVentes = document.querySelector("#chart-ventes");
 
-const displayZoneArray = Array.from( document.querySelectorAll(".display-zone") );
-const displayBtnsArray = Array.from( document.querySelectorAll(".display-btn") );
+const ctxVentes = new Chart(myChartVentes, {
+  type: "line",
+  data: {
+    labels: ["janvier", "fevrier", "mars", "avril", "mai"],
+    datasets: [
+      {
+        backgroundColor: "#d75b95",
+        border: 1,
+        label: "ventes",
+        data: [20, 17, 30, 32, 10],
+        tension: 0.4,
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    animation: {
+      duration: 1000,
+      easing: "easeInOutQuart",
+    },
+  },
+});
+
+if (ctxVentes) {
+  ctxVentes.resize();
+  ctxVentes.update();
+}
+const myChartPlusVentes = document.querySelector("#chart-plus-ventes");
+
+const ctxPlusVentes = new Chart(myChartPlusVentes, {
+  type: "doughnut",
+  data: {
+    labels: ["Poduit 1", "produit 2", "produit 3", "produit 4"],
+    datasets: [
+      {
+        data: [10, 20, 30, 7],
+        label: "vendus",
+      },
+    ],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+  },
+});
+if (ctxPlusVentes) {
+  ctxPlusVentes.resize();
+  ctxPlusVentes.update();
+}
+
+//afficher et masquer les sections de l'aside
+const displayZoneArray = Array.from(document.querySelectorAll(".display-zone"));
+const displayBtnsArray = Array.from(document.querySelectorAll(".display-btn"));
 const BtnsAsideBar = document.querySelector(".btns-aside-bar");
-const sectionActiveText = document.querySelector(".section-active-text")
+const sectionActiveText = document.querySelector(".section-active-text");
 
 //afficher le dashboard par defaut
 displayZoneArray[0].classList.add("displayZoneActive");
@@ -77,13 +131,21 @@ function showDisplayZone(eltClique) {
   for (let elt of displayBtnsArray) {
     if (elt.getAttribute("aria-current")) {
       elt.setAttribute("aria-current", false);
-      const posElt = displayBtnsArray.indexOf(elt)
-      displayZoneArray[posElt].classList.remove("displayZoneActive")
+      const posElt = displayBtnsArray.indexOf(elt);
+      displayZoneArray[posElt].classList.remove("displayZoneActive");
+      if (posElt === 0) {
+        ctxVentes.resize();
+        ctxVentes.update();
+      }
+      if (posElt === 0) {
+        ctxPlusVentes.resize();
+        ctxPlusVentes.update();
+      }
     }
   }
   eltClique.setAttribute("aria-current", true);
   const posEltClique = displayBtnsArray.indexOf(eltClique);
-  displayZoneArray[posEltClique].classList.add('displayZoneActive')
+  displayZoneArray[posEltClique].classList.add("displayZoneActive");
 }
 
 BtnsAsideBar.addEventListener("click", (e) => {

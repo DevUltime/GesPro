@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script defer src="auth.js" type="module"></script>
     <script defer src="script.js" type="module"></script>
+    <script src="./node_modules/chart.js/dist/chart.umd.js"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="styleScripts.css">
 
@@ -249,11 +250,16 @@
                         </tbody>
 
                     </table>
+                    <div class="graphique-plus-ventes">
+                        <canvas aria-label="chart" aria-roledescription="img" id="chart-plus-ventes">
+                            courbes de l’évolution des produits plus vendus
+                        </canvas>
+                    </div>
                 </div>
 
                 <div class="graphique-ventes">
-                    <canvas>
-                        courbes de l’évolution des ventes &lt;canvas&gt;
+                    <canvas aria-label="chart" aria-roledescription="img" id="chart-ventes">
+                        courbes de l’évolution des ventes
                     </canvas>
                 </div>
             </div>

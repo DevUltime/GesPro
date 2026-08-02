@@ -165,7 +165,7 @@ body{
 
 /*section dashboard*/
 .dashboard{
-    display: grid;
+    display: none;
     min-height: 100vh;
     grid-template-columns: 250px 1fr;
     grid-template-rows: var(--space-6) 1fr;
@@ -227,6 +227,7 @@ body{
     align-items: center;
     justify-content: space-between;
     padding: var(--space-2);
+    position: relative;
 }
 .section-active-text{
     font-size: var(--font-size-lg);
@@ -241,8 +242,10 @@ body{
     padding: var(--space-1);
 }
 .search-bar{
-    position: fixed;
+    top: 50%;
+    position: absolute;
     left: 40%;
+    transform: translate(-50%, -50%);
 }
 .search-bar img{
     height: 20px;
@@ -404,6 +407,10 @@ body{
     box-shadow: var(--box-shadow);
     border-radius: var(--border-radius-default);
     padding: var(--space-2);
+    overflow: hidden;
+}
+.produits-plus-vendus h2{
+    font-size: var(--font-size-lg);
 }
 .table-produits-plus-vendus{
     text-align: left;
@@ -436,11 +443,8 @@ body{
     min-height: 0;
     min-width: 0;
 }
-canvas{
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    height: 100% !important;
-    width: 100% !important;
+.graphique-plus-ventes{
+    position: relative;
+    height: 100%;
+    width: 100%;
 }

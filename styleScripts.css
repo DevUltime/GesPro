@@ -25,6 +25,9 @@
 .secConnexionInvisible{
     display: none;
 }
+.showDashboard{
+    display: grid;
+}
 
 .showMsgErreur{
     display: block;
