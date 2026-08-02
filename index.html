@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="auth.js"></script>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleScripts.css">
+
+    <title>GesPro</title>
+</head>
+
+<body>
+    <section class="sec-accueil inscription-sec">
+        <div class="container-accueil container-inscription">
+            <div class="card-accueil card-accueil-inscription">
+                <h1>Bienvenue sur <Span>GesPro</Span></h1>
+                <p>une application révolutionnaire qui
+                    vous permettra de gérer efficacement
+                    vos stocks et tout autre donnée susceptible
+                    de créer des embrouilles dans des calculs
+                    complexes</p>
+            </div>
+            <div class="card-formulaire card-formulaire-inscription">
+                <form action="" class="formulaire formulaire-inscription">
+                    <h2>Créer un compte</h2>
+                    <p class="notice">Les champs marqués sont <span>*</span> sont obligatoires</p>
+                    <label for="name">Nom <span aria-hidden="true">*</span></label>
+                    <input type="text" id="name" name="Nom" autocomplete="family-name">
+                    <p class="msg-erreur msg-erreur-name">Le nom doit contenir minimum 3 caractères</p>
+                    <label for="surname">Prénom</label>
+                    <input type="text" id="surname" name="Prenom" autocomplete="given-name">
+                    <label for="email">Email <span aria-hidden="true">*</span></label>
+                    <input type="email" name="Email" id="email" autocomplete="email">
+                    <p class="msg-erreur msg-erreur-email">Entrez une adresse mail valide</p>
+                    <label for="password">Mot de passe <span aria-hidden="true">*</span></label>
+                    <input type="password" name="Password" id="password" autocomplete="new-password">
+                    <p class="msg-erreur msg-erreur-password">Le mot de passe doit avoir minimum 6 caractères</p>
+                    <label for="confirm-password">Confirmer le mot de passe <span aria-hidden="true">*</span></label>
+                    <input type="password" name="ConfirmPassword" id="confirm-password" autocomplete="new-password">
+                    <p class="msg-erreur msg-erreur-confirm-password">La valeur doit être identique au mot de passe</p>
+                    <label class="termes-contrat"><input type="checkbox" id="check-terms">
+                        <p>En vous inscrivant, vous accepter <a href="#">la politique
+                                d'utilisation</a> et <a href="#">les termes de contrat</p></a>
+                    </label>
+                    <button class="btn-accueil btn-inscription" type="submit"><span class="text-btn">Créer un
+                            compte</span>
+                    </button>
+                    <p style="text-align: right; font-size: 0.6rem;">avez-vous déjà un compte ? <a href="#"
+                            id="show-sec-connexion">Se connecter</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="sec-accueil connexion-sec">
+        <div class="container-accueil container-connexion">
+            <div class="card-accueil card-accueil-connexion">
+                <h1>Bienvenue sur <Span>GesPro</Span></h1>
+                <p>une application révolutionnaire qui
+                    vous permettra de gérer efficacement
+                    vos stocks et tout autre donnée susceptible
+                    de créer des embrouilles dans des calculs
+                    complexes</p>
+            </div>
+            <div class="card-formulaire card-formulaire-connexion">
+                <form action="" class="formulaire formulaire-connexion">
+                    <h2>Se connecter</h2>
+                    <label for="connexion-email">Email </label>
+                    <input type="email" name="Email" id="connexion-email" autocomplete="email">
+                    <label for="connexion-password">Mot de passe</label>
+                    <input type="password" name="Password" id="connexion-password" autocomplete="new-password">
+                    <button class="btn-accueil btn-connexion" type="submit"><span class="text-btn">Se connecter</span>
+                    </button>
+                    <p style="text-align: right; font-size: 0.6rem;">Êtes-vous nouveau ? <a href="#"
+                            id="show-sec-inscription">S'inscrire</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard">
+
+        <div class="aside-bar">
+
+            <div class="logo">GesPro</div>
+
+            <div class="btns-aside-bar">
+                <button class="display-btn display-dashboard" aria-current="true"><img src="icons/dashboard.png"
+                        alt="">Dashboard</button>
+                <button class="display-btn display-produits"><img src="icons/product.png" alt="">Produits</button>
+                <button class="display-btn display-commandes"><img src="icons/purchase-order.png"
+                        alt="">Commandes</button>
+                <button class="display-btn display-stocks"><img src="icons/stock.png" alt="">Stocks</button>
+                <button class="display-btn display-analyses"><img src="icons/analyse.png" alt="">Analyses</button>
+                <button class="display-btn display-utilisateur"><img src="icons/user.png" alt="">Utilisateur</button>
+            </div>
+            <button class="btn-get-out"><img src="icons/logout.png" alt="">Se déconnecter</button>
+        </div>
+
+        <div class="nav-bar">
+            <div class="section-active-text">Dashboard</div>
+            <div class="search-bar">
+                <input type="text" placeholder="rechercher...">
+                <img src="icons/search.svg" alt="">
+            </div>
+            <div class="user-infos-nav-bar">
+                <div style="pointer-events: none;" class="user-name-nav-bar">Jordan</div>
+
+                <div class="notification-nav-bar">
+                    <img src="icons/notification.png" alt="">
+                </div>
+
+                <div class="settings-nav-bar">
+                    <img src="icons/settings.svg" alt="">
+                </div>
+
+                <div class="user-profil-nav-bar">
+                    <img src="icons/account.png" alt="">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="display-zone display-zone-dashboard">
+            <div class="recent-activity">
+                <div class="container-recent-activity">
+                    <h2>Activités récentes</h2>
+                    <div>
+                        <div>
+                            <h3>00</h3>
+                            <p>quantité</p>
+                            <p>Stock total</p>
+                        </div>
+                        <div>
+                            <h3>00</h3>
+                            <p>quantité</p>
+                            <p>Produits total</p>
+                        </div>
+                        <div>
+                            <h3>00</h3>
+                            <p>quantité</p>
+                            <p>Commandes total</p>
+                        </div>
+                        <div>
+                            <h3>00</h3>
+                            <p>FCFA</p>
+                            <p>Revenus totaux</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="inventaire">
+                    <h2>Inventaire du mois</h2>
+                    <div>
+                        <div>
+                            <p>Quantité totale</p>
+                            <hr>
+                            <span>00</span>
+                        </div>
+
+                        <div>
+                            <p>Quantité vendue</p>
+                            <hr>
+                            <span>00</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="statistics">
+                <div class="ventes-recentes">
+                    <h2>ventes récentes</h2>
+                    <table class="table-ventes-recentes">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Produit</th>
+                                <th>Prix total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>00/00/0000</td>
+                                <td>Client 1</td>
+                                <td>Produit 1</td>
+                                <td>00 FCFA</td>
+                            </tr>
+
+                            <tr>
+                                <td>00/00/0000</td>
+                                <td>Client 2</td>
+                                <td>Produit 2</td>
+                                <td>00 FCFA</td>
+                            </tr>
+
+                            <tr>
+                                <td>00/00/0000</td>
+                                <td>Client 3</td>
+                                <td>Produit 3</td>
+                                <td>00 FCFA</td>
+                            </tr>
+
+                            <tr>
+                                <td>00/00/0000</td>
+                                <td>Client 4</td>
+                                <td>Produit 4</td>
+                                <td>00 FCFA</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="produits-plus-vendus">
+                    <h2>Produits les plus vendus</h2>
+                    <table class="table-produits-plus-vendus">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Quantité vendue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Produit 1</td>
+                                <td>00</td>
+                            </tr>
+
+                            <tr>
+                                <td>Produit 2</td>
+                                <td>00</td>
+                            </tr>
+
+                            <tr>
+                                <td>Produit 3</td>
+                                <td>00</td>
+                            </tr>
+
+                            <tr>
+                                <td>Produit 4</td>
+                                <td>00</td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <div class="graphique-ventes">
+                    <canvas>
+                        courbes de l’évolution des ventes &lt;canvas&gt;
+                    </canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="display-zone display-zone-produits">
+            <h2>pas d'information pour les produits</h2>
+        </div>
+
+        <div class="display-zone display-zone-commandes">
+            <h2>pas d'information pour les commandes</h2>
+        </div>
+
+        <div class="display-zone display-zone-stocks">
+            <h2>pas d'information pour les stocks</h2>
+        </div>
+
+        <div class="display-zone display-zone-analyses">
+            <h2>pas d'information pour les analyses</h2>
+        </div>
+
+        <div class="display-zone display-zone-utilisateur">
+            <h2>pas d'information sur l’utilisateur</h2>
+        </div>
+
+    </section>
+</body>
+
+</html>

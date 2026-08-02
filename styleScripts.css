@@ -1,0 +1,85 @@
+:root {
+  /*colors*/
+  --primary-red: #d75b95;
+  --primary-blue: #45b1f0;
+  --primary-purple: #d4e1ea;
+  --dark-navy: #1d2d50;
+  --light-gray-bg: #f4f6f8;
+  --text-gray: #3a3a3a;
+  --pure-white: #ffffff;
+}
+
+/*Activation et desactivation des formulaires*/
+.formulaire-connexion{
+    gap: var(--space-2);    
+}
+.secInscriptionVisible{
+    display: flex;
+}
+.secConnexionVisible{
+    display: flex;
+}
+.secInscriptionInvisible{
+    display: none;
+}
+.secConnexionInvisible{
+    display: none;
+}
+
+.showMsgErreur{
+    display: block;
+}
+
+.validInput{
+    border: 1px solid var(--dark-navy);
+}
+.invalidInput{
+    border-color: rgb(255, 0, 119);
+}
+.popUpValid{
+    border-top: 4px solid rgb(102, 255, 179);
+    padding: 10px 20px;
+    font-size: .8rem;
+    width: 150px;
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    animation: debounce .3s ease-in-out;
+}
+.popUpInvalid{
+    border-top: 4px solid rgb(255, 0, 119);
+    padding: 10px 20px;
+    font-size: .8rem;
+    width: 150px;
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    animation: debounce .3s ease-in-out;
+}
+@keyframes debounce {
+    0%{translate: 0 20px;}
+    80%{translate: 0 -10px;}
+    100%{translate: 0 0;}
+}
+.notification-nav-bar.showTooltip::after,
+.settings-nav-bar.showTooltip::after,
+.user-profil-nav-bar.showTooltip::after{
+    display: block;
+    animation: translateAnimation .3s forwards;
+}
+@keyframes translateAnimation {
+    to {
+        translate: 0 0;
+        opacity: 1;
+    }
+}
+
+.userInfosActif{
+    background-color: color-mix(in srgb, var(--primary-blue) 20%, transparent);
+}
+
+.displayZoneActive{
+    display: flex;
+}
