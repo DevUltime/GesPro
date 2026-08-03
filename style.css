@@ -165,7 +165,7 @@ body{
 
 /*section dashboard*/
 .dashboard{
-    display: none;
+    display: grid;
     min-height: 100vh;
     grid-template-columns: 250px 1fr;
     grid-template-rows: var(--space-6) 1fr;
@@ -228,6 +228,7 @@ body{
     justify-content: space-between;
     padding: var(--space-2);
     position: relative;
+    box-shadow: var(--box-shadow);
 }
 .section-active-text{
     font-size: var(--font-size-lg);
@@ -332,23 +333,6 @@ body{
     display: none;
     translate: 0 5px;
 }
-.display-zone{
-    display: flex;
-    flex-direction: column;
-    background-color: color-mix(in srgb, var(--primary-blue) 10%, transparent);
-}
-.display-zone-dashboard{
-    display: none;
-}
-.display-zone-produits,
-.display-zone-commandes,
-.display-zone-stocks,
-.display-zone-analyses,
-.display-zone-utilisateur{
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
 .recent-activity{
     display: flex;
     gap: var(--space-2);
@@ -447,4 +431,139 @@ body{
     position: relative;
     height: 100%;
     width: 100%;
+}
+/*section des produits*/
+
+.display-zone{
+    display: flex;
+    flex-direction: column;
+    background-color: color-mix(in srgb, var(--primary-blue) 10%, transparent);
+}
+.display-zone-dashboard{
+    display: none;
+}
+.display-zone-commandes,
+.display-zone-stocks,
+.display-zone-analyses,
+.display-zone-utilisateur{
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.display-zone-produits{
+    display: none;
+    padding: var(--space-3);
+    background-color: var(--pure-white);
+    position: relative;
+}
+.nav-produits{
+    display: flex;
+    gap: var(--space-1);
+    align-items: center;
+    margin-bottom: var(--space-2);
+    justify-content: flex-end;
+    position: relative;
+}
+.nav-produits button{
+    padding: var(--space-1);
+    border: none;
+    background-color: var(--primary-blue);
+    color: var(--pure-white);
+    border-radius: var(--border-radius-default);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+
+}
+.nav-produits button:hover{
+    background-color: var(--primary-red);
+}   
+.nav-produits button:first-child{
+    position: absolute;
+    left: 0;
+    background-color: transparent;
+    color: var(--primary-blue);
+    font-weight: bolder;
+    font-size: var(--font-size-lg);
+}
+.container-table-produits{
+    overflow: auto;
+    height: 100%;
+    width: 100%;
+}
+.table-produits{
+    text-align: left;
+    border-collapse: collapse;
+    width: 100%;
+}
+.table-produits td,
+.table-produits th{
+    padding: var(--space-1);
+    border-bottom: var(--border-container);
+}
+.table-produits tr:not(thead tr):hover{
+    background-color: color-mix(in srgb, var(--primary-blue) 20%, transparent);
+}
+.container-ajouter-produit{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+.form-ajouter-produit{
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 400px;
+    padding: var(--space-3);
+    background-color: var(--pure-white);
+    box-shadow: var(--box-shadow);
+    border-radius: var(--border-radius-default);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+}
+.form-ajouter-produit input{
+    height: var(--space-3);
+    border: 1px solid var(--dark-navy);
+    border-radius: var(--border-radius-default);
+    padding: 5px;
+    transition: border .2s ease-in-out;
+}
+.form-ajouter-produit input:focus{
+    outline: none;
+    border-color: var(--primary-red);
+}
+.form-ajouter-produit input:hover{
+    border-color: var(--primary-blue);
+}
+.form-ajouter-produit legend{
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+.btn-ajouter-produit{
+    padding: var(--space-1);
+    border: none;
+    background-color: var(--primary-blue);
+    color: var(--pure-white);
+    border-radius: var(--border-radius-default);
+    cursor: pointer;
+}
+.text-default-ajouter-produit{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    font-size: var(--font-size-lg);
+    color: var(--dark-navy);
+    font-weight: bold;
 }

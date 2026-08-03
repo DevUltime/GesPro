@@ -266,9 +266,64 @@
 
         </div>
 
+
         <div class="display-zone display-zone-produits">
-            <h2>pas d'information pour les produits</h2>
+            <nav class="nav-produits">
+                <button class="btn-nav-produits btn-nav-produits-quantite">0 produit</button>
+                <button class="btn-nav-produits btn-nav-produits-exporter"><img src="icons/xls-export.png" alt=""> Exporter</button>
+                <button class="btn-nav-produits btn-nav-produits-ajouter"><img src="icons/add.png" alt=""> Ajouter</button>
+
+            </nav>
+            <div class="container-table-produits">
+                <table class="table-produits">
+                    <thead>
+                        <tr>
+                            <th>Nom du produit</th>
+                            <th>Id produit</th>
+                            <th>catégorie</th>
+                            <th>Quantité</th>
+                            <th>État du stock</th>
+                            <th>Prix unitaire</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <p class="text-default-ajouter-produit">Aucun produit disponible, veuillez en ajouter un</p>
+
+                <div class="container-ajouter-produit">
+
+                    <form action="" class="form-ajouter-produit">
+                        <legend>Ajouter un produit</legend>
+                        <label for="nom-produit">Nom du produit</label>
+                        <input type="text" id="nom-produit" name="nom-produit">
+
+                        <label for="id-produit">Id du produit</label>
+                        <input type="text" id="id-produit" name="id-produit">
+
+                        <label for="categorie-produit">Catégorie</label>
+                        <input type="text" id="categorie-produit" name="categorie-produit">
+
+                        <label for="quantite-produit">Quantité</label>
+                        <input type="number" id="quantite-produit" name="quantite-produit">
+
+                        <label for="etat-stock">État du stock</label>
+                        <select id="etat-stock" name="etat-stock">
+                            <option value="En stock">En stock</option>
+                            <option value="En rupture de stock">En rupture de stock</option>
+                        </select>
+
+                        <label for="prix-unitaire">Prix unitaire</label>
+                        <input type="number" id="prix-unitaire" name="prix-unitaire">
+
+                        <button type="submit" class="btn btn-ajouter-produit">Ajouter le produit</button>
+                    </form>
+
+                </div>
+
+            </div>
         </div>
+
 
         <div class="display-zone display-zone-commandes">
             <h2>pas d'information pour les commandes</h2>

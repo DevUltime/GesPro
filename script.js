@@ -127,6 +127,7 @@ const sectionActiveText = document.querySelector(".section-active-text");
 //afficher le dashboard par defaut
 displayZoneArray[0].classList.add("displayZoneActive");
 
+
 function showDisplayZone(eltClique) {
   for (let elt of displayBtnsArray) {
     if (elt.getAttribute("aria-current")) {
@@ -154,4 +155,141 @@ BtnsAsideBar.addEventListener("click", (e) => {
   if (!eltClique) return;
   sectionActiveText.textContent = eltClique.textContent;
   showDisplayZone(eltClique);
+});
+
+//ajouter un produit
+
+const btnAjouterProduit = document.querySelector(".btn-nav-produits-ajouter");
+const formAjouterProduit = document.querySelector(".form-ajouter-produit");
+const containerAjouterProduit = document.querySelector(
+  ".container-ajouter-produit",
+);
+const textDefaultAjouterProduit = document.querySelector(
+  ".text-default-ajouter-produit",
+);
+const NomProduit = document.querySelector("#nom-produit");
+const PrixUnitaire = document.querySelector("#prix-unitaire");
+const QuantiteProduit = document.querySelector("#quantite-produit");
+const CategorieProduit = document.querySelector("#categorie-produit");
+const EtatStockProduit = document.querySelector("#etat-stock");
+const idProduit = document.querySelector("#id-produit");
+const btnAjouterProduitForm = document.querySelector(".btn-ajouter-produit");
+const tableProduits = document.querySelector(".table-produits tbody");
+const formStateAjouterProduit = {
+  nom: false,
+  id: false,
+  categorie: false,
+  quantite: false,
+  etatStock: true,
+  prixUnitaire: false,
+};
+
+function isValidInput(input, formState, key) {
+  if (input.value.trim() === "") {
+    formState[key] = false;
+    input.classList.remove("validInput");
+    return false;
+  }
+  formState[key] = true;
+  input.classList.add("validInput");
+  return true;
+}
+
+function createProduit() {
+  const formData = new FormData(formAjouterProduit);
+  const produitDatas = Object.fromEntries(formData);
+
+  const produit = {
+    nom: produitDatas["nom-produit"]?.trim(),
+    id: produitDatas["id-produit"]?.trim(),
+    categorie: produitDatas["categorie-produit"]?.trim(),
+    quantite: produitDatas["quantite-produit"]?.trim(),
+    etatStock: produitDatas["etat-stock"]?.trim(),
+    prixUnitaire: produitDatas["prix-unitaire"]?.trim(),
+  };
+  return produit;
+}
+
+function isValidFormAjouterProduit() {
+  const valid =
+    formStateAjouterProduit.nom &&
+    formStateAjouterProduit.prixUnitaire &&
+    formStateAjouterProduit.quantite &&
+    formStateAjouterProduit.categorie &&
+    formStateAjouterProduit.etatStock &&
+    formStateAjouterProduit.id;
+  btnAjouterProduitForm.disabled = !valid;
+  btnAjouterProduitForm.style.opacity = valid ? "1" : "0.5";
+  return valid;
+}
+
+function ajouterProduit(produit) {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${produit.nom}</td>
+    <td>${produit.id}</td>
+    <td>${produit.categorie}</td>
+    <td>${produit.quantite}</td>
+    <td>${produit.etatStock}</td>
+    <td>${produit.prixUnitaire}</td>
+  `;
+  tableProduits.prepend(tr);
+}
+
+function initFormAjouterProduit() {
+
+  btnAjouterProduitForm.disabled = true;
+  btnAjouterProduitForm.style.opacity = "0.5";
+
+  NomProduit.addEventListener("input", () => {
+    isValidInput(NomProduit, formStateAjouterProduit, "nom");
+    isValidFormAjouterProduit();
+  });
+  PrixUnitaire.addEventListener("input", () => {
+    isValidInput(PrixUnitaire, formStateAjouterProduit, "prixUnitaire");
+    isValidFormAjouterProduit();
+  });
+  QuantiteProduit.addEventListener("input", () => {
+    isValidInput(QuantiteProduit, formStateAjouterProduit, "quantite");
+    isValidFormAjouterProduit();
+  });
+  CategorieProduit.addEventListener("input", () => {
+    isValidInput(CategorieProduit, formStateAjouterProduit, "categorie");
+    isValidFormAjouterProduit();
+  });
+  idProduit.addEventListener("input", () => {
+    isValidInput(idProduit, formStateAjouterProduit, "id");
+    isValidFormAjouterProduit();
+  });
+
+  formAjouterProduit.addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (isValidFormAjouterProduit()) {
+      const produit = createProduit();
+      console.log(produit);
+      ajouterProduit(produit);
+      containerAjouterProduit.classList.remove("showFormAjouterProduit");
+      formAjouterProduit.reset();
+      textDefaultAjouterProduit.style.display = "none";
+      
+      Object.keys(formStateAjouterProduit).forEach((key) => {
+        if (key !== "etatStock") {
+          formStateAjouterProduit[key] = false;
+        }
+      });
+    }
+  });
+}
+
+initFormAjouterProduit();
+
+btnAjouterProduit.addEventListener("click", () => {
+  containerAjouterProduit.classList.add("showFormAjouterProduit");
+});
+
+containerAjouterProduit.addEventListener("click", (e) => {
+  if (e.target === containerAjouterProduit) {
+    containerAjouterProduit.classList.remove("showFormAjouterProduit");
+    textDefaultAjouterProduit.style.display = "block";
+  }
 });
