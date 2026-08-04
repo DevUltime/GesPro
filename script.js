@@ -175,6 +175,7 @@ const EtatStockProduit = document.querySelector("#etat-stock");
 const idProduit = document.querySelector("#id-produit");
 const btnAjouterProduitForm = document.querySelector(".btn-ajouter-produit");
 const tableProduits = document.querySelector(".table-produits tbody");
+
 const formStateAjouterProduit = {
   nom: false,
   id: false,
@@ -237,7 +238,6 @@ function ajouterProduit(produit) {
 }
 
 function initFormAjouterProduit() {
-
   btnAjouterProduitForm.disabled = true;
   btnAjouterProduitForm.style.opacity = "0.5";
 
@@ -266,17 +266,15 @@ function initFormAjouterProduit() {
     e.preventDefault();
     if (isValidFormAjouterProduit()) {
       const produit = createProduit();
-      console.log(produit);
       ajouterProduit(produit);
       containerAjouterProduit.classList.remove("showFormAjouterProduit");
       formAjouterProduit.reset();
       textDefaultAjouterProduit.style.display = "none";
-      
+
       Object.keys(formStateAjouterProduit).forEach((key) => {
-        if (key !== "etatStock") {
-          formStateAjouterProduit[key] = false;
-        }
+        formStateAjouterProduit[key] = key === "etatStock" ? true : false;
       });
+      initFormAjouterProduit();
     }
   });
 }
@@ -293,3 +291,302 @@ containerAjouterProduit.addEventListener("click", (e) => {
     textDefaultAjouterProduit.style.display = "block";
   }
 });
+
+//ajouter une commande
+
+const btnAjouterCommande = document.querySelector(".btn-nav-commande-ajouter");
+const formAjouterCommande = document.querySelector(".form-commande");
+const containerAjouterCommande = document.querySelector(
+  ".container-ajouter-commande",
+);
+const textDefaultAjouterCommande = document.querySelector(
+  ".text-default-commande",
+);
+const nomClient = document.querySelector("#nom-client");
+const idCommande = document.querySelector("#id-commande");
+const btnAjouterCommandeForm = document.querySelector(".btn-ajouter-commande");
+const tableCommandes = document.querySelector(".table-commande tbody");
+const prixTotalCommande = document.querySelector("#prix-total");
+const dateCommande = document.querySelector("#date-commande");
+const produitAjouteListe = document.querySelector(".produits-ajoute-liste");
+const BtnAjouterProduitListe = document.querySelector(
+  ".btn-ajouter-produit-liste",
+);
+const tableCommande = document.querySelector(".table-commande tbody");
+btnAjouterCommande.addEventListener("click", () => {
+  containerAjouterCommande.classList.add("showFormAjouterCommande");
+});
+
+containerAjouterCommande.addEventListener("click", (e) => {
+  if (e.target === containerAjouterCommande) {
+    containerAjouterCommande.classList.remove("showFormAjouterCommande");
+  }
+});
+
+const formStateAjouterCommande = {
+  nomClient: false,
+  idCommande: false,
+  produitSelectionne: false,
+  dateCommande: false,
+};
+
+class AjoutProduitListe {
+  static nbreProduit = 0;
+  static montantTotalCommande = 0;
+
+  constructor(nomProduit, prixProduit) {
+    this.nomProduit = nomProduit;
+    this.prixProduit = prixProduit;
+    this.quantite = 1;
+    this.montantTotal = this.quantite * this.prixProduit;
+    AjoutProduitListe.nbreProduit += 1;
+    AjoutProduitListe.montantTotalCommande += this.montantTotal;
+  }
+  get nbreProduit() {
+    return AjoutProduitListe.nbreProduit;
+  }
+  get montantTotalCommande() {
+    return AjoutProduitListe.montantTotalCommande;
+  }
+  augmneterQuantite() {
+    AjoutProduitListe.montantTotalCommande -= this.montantTotal;
+    this.quantite += 1;
+    this.montantTotal = this.prixProduit * this.quantite;
+    AjoutProduitListe.montantTotalCommande += this.montantTotal;
+  }
+  diminuerQunatite() {
+    AjoutProduitListe.montantTotalCommande -= this.montantTotal;
+    this.quantite -= 1;
+    this.montantTotal = this.prixProduit * this.quantite;
+    AjoutProduitListe.montantTotalCommande += this.montantTotal;
+  }
+  reset() {
+    AjoutProduitListe.montantTotalCommande -= this.montantTotal;
+    AjoutProduitListe.nbreProduit -= 1;
+    this.prixProduit = 0;
+    this.quantite = 0;
+    this.montantTotal = 0;
+  }
+}
+
+function createProduitCommande(NomPrduitSelect, PrixProduitSelect) {
+  const produit = new AjoutProduitListe(NomPrduitSelect, PrixProduitSelect);
+  const divParent = document.createElement("div");
+  divParent.classList.add("produit-ajoute");
+  divParent.setAttribute("data-name", produit.nomProduit);
+
+  const divInfosProduit = document.createElement("div");
+  const spanNom = document.createElement("span");
+  spanNom.textContent = produit.nomProduit;
+  const spanPrix = document.createElement("span");
+  spanPrix.textContent = produit.prixProduit;
+  divInfosProduit.append(spanNom, spanPrix);
+  divParent.appendChild(divInfosProduit);
+
+  const divContainerBtns = document.createElement("div");
+  const divContainerBtnsSet = document.createElement("div");
+  const btnDiminuer = document.createElement("button");
+  btnDiminuer.textContent = "-";
+  btnDiminuer.classList.add("diminuerProduit");
+
+  const nbreProduitSelect = document.createElement("span");
+  nbreProduitSelect.textContent = produit.quantite;
+  nbreProduitSelect.classList.add("produitQuantite");
+
+  const btnAugmenter = document.createElement("button");
+  btnAugmenter.textContent = "+";
+  btnAugmenter.classList.add("augmenterProduit");
+
+  divContainerBtnsSet.append(btnDiminuer, nbreProduitSelect, btnAugmenter);
+  divContainerBtns.appendChild(divContainerBtnsSet);
+
+  const montantTotalProduit = document.createElement("div");
+  montantTotalProduit.textContent = produit.montantTotal;
+  montantTotalProduit.classList.add("produitMontantTotal");
+
+  const btnSupprimer = document.createElement("button");
+  btnSupprimer.textContent = "X";
+  btnSupprimer.classList.add("supprimerProduit");
+
+  divContainerBtns.append(montantTotalProduit, btnSupprimer);
+  divParent.appendChild(divContainerBtns);
+
+  produitAjouteListe.prepend(divParent);
+  return produit;
+}
+
+const ArrayProduitsSelectionnes = [];
+const produitsCree = {};
+
+const select = document.querySelector("#produits-commande");
+
+function handleAjouterProduit() {
+  const selectedOption = select.selectedOptions[0];
+  if (!selectedOption) return;
+
+  const nomProduit = selectedOption.value;
+  const prixProduit = selectedOption.dataset.price || "0";
+
+  if (!ArrayProduitsSelectionnes.includes(nomProduit) && prixProduit !== "0") {
+    const produit = createProduitCommande(nomProduit, prixProduit);
+    ArrayProduitsSelectionnes.push(nomProduit);
+    document.querySelector(".text-default-produits-ajoute").style.display =
+      "none";
+    prixTotalCommande.textContent = AjoutProduitListe.montantTotalCommande;
+    produitsCree[nomProduit] = produit;
+    AjoutProduitListe.nbreProduit > 0
+      ? (formStateAjouterCommande.produitSelectionne = true)
+      : (formStateAjouterCommande.produitSelectionne = false);
+      isValidFormCommande()
+  }
+}
+BtnAjouterProduitListe.addEventListener("click", (e) => {
+  e.preventDefault();
+  handleAjouterProduit();
+});
+
+function updateProduitCommandeUI(parent, produit) {
+  const qteSpan = parent.querySelector(".produitQuantite");
+  const montantTotalProduit = parent.querySelector(".produitMontantTotal");
+  if (qteSpan) qteSpan.textContent = produit.quantite;
+  if (montantTotalProduit)
+    montantTotalProduit.textContent = produit.montantTotal;
+  prixTotalCommande.textContent = AjoutProduitListe.montantTotalCommande;
+}
+
+function removeProduitCommande(parent, produitName) {
+  if (!parent) return;
+  if (produitsCree[produitName]) {
+    produitsCree[produitName].reset();
+    delete produitsCree[produitName];
+  }
+  const index = ArrayProduitsSelectionnes.indexOf(produitName);
+  if (index !== -1) ArrayProduitsSelectionnes.splice(index, 1);
+  parent.remove();
+  prixTotalCommande.textContent = AjoutProduitListe.montantTotalCommande;
+  AjoutProduitListe.nbreProduit > 0
+    ? (formStateAjouterCommande.produitSelectionne = true)
+    : (formStateAjouterCommande.produitSelectionne = false);
+    isValidFormCommande()
+}
+
+produitAjouteListe.addEventListener("click", (event) => {
+  event.preventDefault();
+  const eltClique = event.target;
+  const parent = eltClique.closest(".produit-ajoute");
+  if (!parent) return;
+  const parentName = parent.getAttribute("data-name");
+
+  if (eltClique.classList.contains("supprimerProduit")) {
+    removeProduitCommande(parent, parentName);
+    return;
+  }
+
+  if (!produitsCree[parentName]) return;
+
+  if (eltClique.classList.contains("augmenterProduit")) {
+    produitsCree[parentName].augmneterQuantite();
+    updateProduitCommandeUI(parent, produitsCree[parentName]);
+    return;
+  }
+
+  if (eltClique.classList.contains("diminuerProduit")) {
+    produitsCree[parentName].diminuerQunatite();
+    if (produitsCree[parentName].quantite <= 0) {
+      removeProduitCommande(parent, parentName);
+    } else {
+      updateProduitCommandeUI(parent, produitsCree[parentName]);
+    }
+    return;
+  }
+});
+
+
+function isValidFormCommande() {
+  const valid =
+    formStateAjouterCommande.nomClient &&
+    formStateAjouterCommande.idCommande &&
+    formStateAjouterCommande.produitSelectionne &&
+    formStateAjouterCommande.dateCommande;
+  btnAjouterCommandeForm.disabled = !valid;
+  btnAjouterCommandeForm.style.opacity = valid ? "1" : "0.5";
+  return valid;
+}
+
+function initFormCommande() {
+  btnAjouterCommandeForm.disabled = true;
+  btnAjouterCommandeForm.style.opacity = ".5";
+
+  idCommande.addEventListener("input", () => {
+    isValidInput(idCommande, formStateAjouterCommande, "idCommande");
+    isValidFormCommande();
+    console.log(formStateAjouterCommande);
+  });
+
+  dateCommande.addEventListener("change", () => {
+    formStateAjouterCommande.dateCommande = true;
+    isValidFormCommande();
+    console.log(formStateAjouterCommande);
+  });
+
+  nomClient.addEventListener("input", () => {
+    isValidInput(nomClient, formStateAjouterCommande, "nomClient");
+    isValidFormCommande();
+  });
+}
+
+initFormCommande();
+
+
+btnAjouterCommandeForm.addEventListener("click", (event) =>{
+  event.preventDefault();
+  ajouterCommande();
+  textDefaultAjouterCommande.style.display = "none"
+  containerAjouterCommande.classList.remove("showFormAjouterCommande");
+  resetFormCommande();
+})
+
+function ajouterCommande() {
+  const tr = document.createElement("tr");
+  tr.innerHTML = `
+    <td>${idCommande.value}</td>
+    <td>${nomClient.value}</td>
+    <td>${ArrayProduitsSelectionnes}</td>
+    <td>${ArrayProduitsSelectionnes.length}</td>
+    <td>${prixTotalCommande.textContent}</td>
+    <td>${dateCommande.value}</td>
+    <td>...</td>
+  `;
+  tableCommande.prepend(tr);
+}
+
+function resetFormCommande() {
+
+  formAjouterCommande.reset();
+  
+  produitAjouteListe.innerHTML = '';
+  const p = document.createElement("p");
+    p.textContent = "Aucun produit ajouté";
+    p.classList.add("text-default-produits-ajoute");
+    produitAjouteListe.appendChild(p);
+  
+  ArrayProduitsSelectionnes.length = 0; 
+  Object.keys(produitsCree).forEach(key => delete produitsCree[key]);
+
+  AjoutProduitListe.nbreProduit = 0;
+  AjoutProduitListe.montantTotalCommande = 0;
+  
+
+  formStateAjouterCommande.nomClient = false;
+  formStateAjouterCommande.idCommande = false;
+  formStateAjouterCommande.produitSelectionne = false;
+  formStateAjouterCommande.dateCommande = false;
+  
+  prixTotalCommande.textContent = "0";
+  btnAjouterCommandeForm.disabled = true;
+  btnAjouterCommandeForm.style.opacity = "0.5";
+
+  prixTotalCommande.textContent = "0.0";
+
+  initFormCommande();
+}

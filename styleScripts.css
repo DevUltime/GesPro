@@ -35,6 +35,9 @@
 .showFormAjouterProduit{
     display: block;
 }
+.showFormAjouterCommande{
+    display: block;
+}
 .validInput{
     border: 1px solid var(--dark-navy);
 }
