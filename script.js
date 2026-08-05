@@ -1,5 +1,6 @@
 "use strict";
 
+
 const showSecInscription = document.querySelector("#show-sec-inscription");
 const showSecConnexion = document.querySelector("#show-sec-connexion");
 const secInscription = document.querySelector(".inscription-sec");
@@ -67,17 +68,20 @@ document.addEventListener("click", (e) => {
 //affichage du chart dans le canvas
 const myChartVentes = document.querySelector("#chart-ventes");
 
+
 const ctxVentes = new Chart(myChartVentes, {
   type: "line",
   data: {
     labels: ["janvier", "fevrier", "mars", "avril", "mai"],
     datasets: [
       {
-        backgroundColor: "#d75b95",
+        backgroundColor: "rgba(69, 177, 240, 0.5)",
+        borderColor: "rgb(69, 177, 240)",  
         border: 1,
         label: "ventes",
         data: [20, 17, 30, 32, 10],
         tension: 0.4,
+        fill: true,
       },
     ],
   },
@@ -88,6 +92,21 @@ const ctxVentes = new Chart(myChartVentes, {
       duration: 1000,
       easing: "easeInOutQuart",
     },
+        scales: {
+      x: {
+        grid: {
+          color: "transparent",
+          display: false,
+        }
+      },
+      y: {
+        grid: {
+          color: "transparent",
+          beginAtZero: true,
+          display: false,
+        }
+      },      
+    }
   },
 });
 
@@ -95,6 +114,7 @@ if (ctxVentes) {
   ctxVentes.resize();
   ctxVentes.update();
 }
+
 const myChartPlusVentes = document.querySelector("#chart-plus-ventes");
 
 const ctxPlusVentes = new Chart(myChartPlusVentes, {
@@ -118,6 +138,47 @@ if (ctxPlusVentes) {
   ctxPlusVentes.update();
 }
 
+const myChartApercuVentes = document.querySelector("#chart-apercu-ventes");
+
+const ctxApercuVentes = new Chart(myChartApercuVentes, {
+  type: "bar",
+  data: {
+    labels: [
+      "Alimentation",
+      "électronique",
+      "Automobile",
+      "Vestimentaire",
+      "Autres",
+    ],
+    datasets: [
+      {
+        data: [10, 20, 30, 5, 50],
+        label: "categories",
+      },
+    ],
+  },
+  options: {
+    scales: {
+      xAxes: [
+        {
+          gridLines: {
+            display: false,
+          },
+          display: false,
+      }
+    ], 
+      yAxes: [
+        {
+          gridLines: {
+            display: false,
+          },
+          display: false,
+      }
+    ],      
+    }
+  },
+});
+
 //afficher et masquer les sections de l'aside
 const displayZoneArray = Array.from(document.querySelectorAll(".display-zone"));
 const displayBtnsArray = Array.from(document.querySelectorAll(".display-btn"));
@@ -126,7 +187,6 @@ const sectionActiveText = document.querySelector(".section-active-text");
 
 //afficher le dashboard par defaut
 displayZoneArray[0].classList.add("displayZoneActive");
-
 
 function showDisplayZone(eltClique) {
   for (let elt of displayBtnsArray) {
@@ -437,7 +497,7 @@ function handleAjouterProduit() {
     AjoutProduitListe.nbreProduit > 0
       ? (formStateAjouterCommande.produitSelectionne = true)
       : (formStateAjouterCommande.produitSelectionne = false);
-      isValidFormCommande()
+    isValidFormCommande();
   }
 }
 BtnAjouterProduitListe.addEventListener("click", (e) => {
@@ -467,7 +527,7 @@ function removeProduitCommande(parent, produitName) {
   AjoutProduitListe.nbreProduit > 0
     ? (formStateAjouterCommande.produitSelectionne = true)
     : (formStateAjouterCommande.produitSelectionne = false);
-    isValidFormCommande()
+  isValidFormCommande();
 }
 
 produitAjouteListe.addEventListener("click", (event) => {
@@ -500,7 +560,6 @@ produitAjouteListe.addEventListener("click", (event) => {
     return;
   }
 });
-
 
 function isValidFormCommande() {
   const valid =
@@ -537,14 +596,13 @@ function initFormCommande() {
 
 initFormCommande();
 
-
-btnAjouterCommandeForm.addEventListener("click", (event) =>{
+btnAjouterCommandeForm.addEventListener("click", (event) => {
   event.preventDefault();
   ajouterCommande();
-  textDefaultAjouterCommande.style.display = "none"
+  textDefaultAjouterCommande.style.display = "none";
   containerAjouterCommande.classList.remove("showFormAjouterCommande");
   resetFormCommande();
-})
+});
 
 function ajouterCommande() {
   const tr = document.createElement("tr");
@@ -561,27 +619,25 @@ function ajouterCommande() {
 }
 
 function resetFormCommande() {
-
   formAjouterCommande.reset();
-  
-  produitAjouteListe.innerHTML = '';
+
+  produitAjouteListe.innerHTML = "";
   const p = document.createElement("p");
-    p.textContent = "Aucun produit ajouté";
-    p.classList.add("text-default-produits-ajoute");
-    produitAjouteListe.appendChild(p);
-  
-  ArrayProduitsSelectionnes.length = 0; 
-  Object.keys(produitsCree).forEach(key => delete produitsCree[key]);
+  p.textContent = "Aucun produit ajouté";
+  p.classList.add("text-default-produits-ajoute");
+  produitAjouteListe.appendChild(p);
+
+  ArrayProduitsSelectionnes.length = 0;
+  Object.keys(produitsCree).forEach((key) => delete produitsCree[key]);
 
   AjoutProduitListe.nbreProduit = 0;
   AjoutProduitListe.montantTotalCommande = 0;
-  
 
   formStateAjouterCommande.nomClient = false;
   formStateAjouterCommande.idCommande = false;
   formStateAjouterCommande.produitSelectionne = false;
   formStateAjouterCommande.dateCommande = false;
-  
+
   prixTotalCommande.textContent = "0";
   btnAjouterCommandeForm.disabled = true;
   btnAjouterCommandeForm.style.opacity = "0.5";

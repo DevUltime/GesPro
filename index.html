@@ -430,7 +430,90 @@
 
 
         <div class="display-zone display-zone-stocks">
-            <h2>pas d'information pour les stocks</h2>
+
+            <div class="container-stocks">
+                <h2>Inventaire</h2>
+                <div class="container-table-stocks">
+
+                    <table class="table-stocks">
+
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Catégorie</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>Ordinateurs</td>
+                                <td>Électronique</td>
+                                <td>5000000</td>
+                                <td>50</td>
+                            </tr>
+                            <tr>
+                                <td>Ordinateurs</td>
+                                <td>Électronique</td>
+                                <td>5000000</td>
+                                <td>50</td>
+                            </tr>
+                            <tr>
+                                <td>Voitures</td>
+                                <td>Automobile</td>
+                                <td>70000000</td>
+                                <td>5</td>
+                            </tr>
+                            <tr>
+                                <td>T-shirt</td>
+                                <td>Vêtement</td>
+                                <td>1000000</td>
+                                <td>500</td>
+                            </tr>
+                            <tr>
+                                <td>Sacs riz</td>
+                                <td>Alimentation</td>
+                                <td>2000000</td>
+                                <td>50</td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+             
+            <div class="container-apercu-stock">
+                <h3>Vue d'ensemble</h3>
+
+                <div class="container-apercu-produits-stock">
+                    <div>
+                        <span>Total produits</span>
+                        <span>00</span>
+                    </div>
+
+                    <div>
+                        <span>Total ventes</span>
+                        <span>00</span>
+                    </div>
+
+                    <div>
+                        <span>Dernière vente</span>
+                        <span>00</span>
+                    </div>
+
+                    <div>
+                        <span>Produits en stock</span>
+                        <span>00</span>
+                    </div>
+                </div>
+
+                <div class="charts-apercu-produits-stock">
+                    <h3>Aperçu graphique</h3>
+                    <canvas id="chart-apercu-ventes" height="100%" width="100%"></canvas>
+                </div>
+            </div>
+
         </div>
 
         <div class="display-zone display-zone-analyses">
