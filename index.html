@@ -93,7 +93,7 @@
                 <button class="display-btn display-commandes"><img src="icons/purchase-order.png"
                         alt="">Commandes</button>
                 <button class="display-btn display-stocks"><img src="icons/stock.png" alt="">Stocks</button>
-                <button class="display-btn display-analyses"><img src="icons/analyse.png" alt="">Analyses</button>
+                <button class="display-btn display-ventes"><img src="icons/analyse.png" alt="">Ventes</button>
                 <button class="display-btn display-clients"><img src="icons/user.png" alt="">Clients</button>
             </div>
             <button class="btn-get-out"><img src="icons/logout.png" alt="">Se déconnecter</button>
@@ -129,22 +129,22 @@
                     <h2>Activités récentes</h2>
                     <div>
                         <div>
-                            <h3>00</h3>
-                            <p>quantité</p>
+                            <h3 id="act-stock-total">00</h3>
+                            <p>Qte</p>
                             <p>Stock total</p>
                         </div>
                         <div>
-                            <h3>00</h3>
-                            <p>quantité</p>
+                            <h3 id="act-produit-total">00</h3>
+                            <p>Qte</p>
                             <p>Produits total</p>
                         </div>
                         <div>
-                            <h3>00</h3>
-                            <p>quantité</p>
+                            <h3 id="act-commandes-total">00</h3>
+                            <p>Qte</p>
                             <p>Commandes total</p>
                         </div>
                         <div>
-                            <h3>00</h3>
+                            <h3 id="act-revenus-totaux">00</h3>
                             <p>FCFA</p>
                             <p>Revenus totaux</p>
                         </div>
@@ -160,13 +160,13 @@
                         <div>
                             <p>Quantité totale</p>
                             <hr>
-                            <span>00</span>
+                            <span id="inv-quantite-total">00</span>
                         </div>
 
                         <div>
                             <p>Quantité vendue</p>
                             <hr>
-                            <span>00</span>
+                            <span id="inv-quantite-vendue">00</span>
                         </div>
                     </div>
 
@@ -181,40 +181,16 @@
                             <tr>
                                 <th>Date</th>
                                 <th>Client</th>
-                                <th>Produit</th>
+                                <th>Produits</th>
+                                <th>Quantité</th>
                                 <th>Prix total</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>00/00/0000</td>
-                                <td>Client 1</td>
-                                <td>Produit 1</td>
-                                <td>00 FCFA</td>
-                            </tr>
 
-                            <tr>
-                                <td>00/00/0000</td>
-                                <td>Client 2</td>
-                                <td>Produit 2</td>
-                                <td>00 FCFA</td>
-                            </tr>
-
-                            <tr>
-                                <td>00/00/0000</td>
-                                <td>Client 3</td>
-                                <td>Produit 3</td>
-                                <td>00 FCFA</td>
-                            </tr>
-
-                            <tr>
-                                <td>00/00/0000</td>
-                                <td>Client 4</td>
-                                <td>Produit 4</td>
-                                <td>00 FCFA</td>
-                            </tr>
                         </tbody>
                     </table>
+                    <p class="text-default-vente-dashboard">Pas de vente pour le moment</p>
                 </div>
 
                 <div class="produits-plus-vendus">
@@ -227,28 +203,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Produit 1</td>
-                                <td>00</td>
-                            </tr>
-
-                            <tr>
-                                <td>Produit 2</td>
-                                <td>00</td>
-                            </tr>
-
-                            <tr>
-                                <td>Produit 3</td>
-                                <td>00</td>
-                            </tr>
-
-                            <tr>
-                                <td>Produit 4</td>
-                                <td>00</td>
-                            </tr>
 
                         </tbody>
-
+                        <p class="text-default-produits-plus-vendus">Pas de produit pour le moment</p>
                     </table>
                     <div class="graphique-plus-ventes">
                         <canvas aria-label="chart" aria-roledescription="img" id="chart-plus-ventes">
@@ -285,7 +242,8 @@
                             <th>catégorie</th>
                             <th>Quantité</th>
                             <th>État du stock</th>
-                            <th>Prix unitaire</th>
+                            <th>Prix d'achat</th>
+                            <th>Prix de vente</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -304,7 +262,14 @@
                         <input type="text" id="id-produit" name="id-produit">
 
                         <label for="categorie-produit">Catégorie</label>
-                        <input type="text" id="categorie-produit" name="categorie-produit">
+                        <select id="categorie-produit" name="categorie-produit">
+                            <option value="" disabled selected>Selectionner une categorie</option>
+                            <option value="Électronique">Électronique</option>
+                            <option value="Alimentation">Alimentation</option>
+                            <option value="Automobile">Automobile</option>
+                            <option value="Vestimentaire">Vestimentaire</option>
+                            <option value="Autres">Autres</option>
+                        </select>
 
                         <label for="quantite-produit">Quantité</label>
                         <input type="number" id="quantite-produit" name="quantite-produit">
@@ -314,9 +279,10 @@
                             <option value="En stock">En stock</option>
                             <option value="En rupture de stock">En rupture de stock</option>
                         </select>
-
-                        <label for="prix-unitaire">Prix unitaire</label>
-                        <input type="number" id="prix-unitaire" name="prix-unitaire">
+                        <label for="prix-achat">Prix d'achat</label>
+                        <input type="number" id="prix-achat" name="prix-achat">
+                        <label for="prix-vente">Prix de vente</label>
+                        <input type="number" id="prix-vente" name="prix-vente">
 
                         <button type="submit" class="btn btn-ajouter-produit">Ajouter le produit</button>
                     </form>
@@ -378,11 +344,6 @@
                         <div class="container-liste-bouton">
                             <select name="produits-commande" id="produits-commande">
                                 <option value="" disabled selected>Sélectionner les produits</option>
-                                <option value="produit A" data-price="1500">Produit A   1500</option>
-
-                                <option value="Produit B" data-price="3000">Produit B   3000</option>
-
-                                <option value="Produit C" data-price="2000">Produit C   2000</option>
                             </select>
 
                             <button class="btn-ajouter-produit-liste"><img src="icons/add.png" alt=""> Ajouter</button>
@@ -391,25 +352,6 @@
                         <label for="produits-ajoute-liste">Produits ajoutés</label>
                         <div class="produits-ajoute-liste">
                             <p class="text-default-produits-ajoute">Aucun produit ajouté</p>
-
-                            <!-- <div class="produit-ajoute">
-                                <div>
-                                    <span>laptop</span>
-                                    <span>1500</span>
-                                </div>
-
-                                <div>
-
-                                    <div>
-                                        <button>-</button>
-                                        <span>1</span>
-                                        <button>+</button>
-                                    </div>
-                                    <div>0.0</div>
-                                    <button>X</button>
-
-                                </div>
-                            </div> -->
 
                         </div>
 
@@ -447,64 +389,35 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>Ordinateurs</td>
-                                <td>Électronique</td>
-                                <td>5000000</td>
-                                <td>50</td>
-                            </tr>
-                            <tr>
-                                <td>Ordinateurs</td>
-                                <td>Électronique</td>
-                                <td>5000000</td>
-                                <td>50</td>
-                            </tr>
-                            <tr>
-                                <td>Voitures</td>
-                                <td>Automobile</td>
-                                <td>70000000</td>
-                                <td>5</td>
-                            </tr>
-                            <tr>
-                                <td>T-shirt</td>
-                                <td>Vêtement</td>
-                                <td>1000000</td>
-                                <td>500</td>
-                            </tr>
-                            <tr>
-                                <td>Sacs riz</td>
-                                <td>Alimentation</td>
-                                <td>2000000</td>
-                                <td>50</td>
-                            </tr>
                         </tbody>
 
                     </table>
+                    <p class="text-default-stocks">Vous n'avez pas de produit en stock</p>
                 </div>
             </div>
-             
+
             <div class="container-apercu-stock">
                 <h3>Vue d'ensemble</h3>
 
                 <div class="container-apercu-produits-stock">
                     <div>
                         <span>Total produits</span>
-                        <span>00</span>
+                        <span id ="apercu-total-produits">00</span>
                     </div>
 
                     <div>
                         <span>Total ventes</span>
-                        <span>00</span>
+                        <span id = "apercu-total-ventes">00</span>
                     </div>
 
                     <div>
                         <span>Dernière vente</span>
-                        <span>00</span>
+                        <span id="apercu-derniere-vente">00</span>
                     </div>
 
                     <div>
                         <span>Produits en stock</span>
-                        <span>00</span>
+                        <span id="apercu-produits-stock">00</span>
                     </div>
                 </div>
 
@@ -516,10 +429,53 @@
 
         </div>
 
-        <div class="display-zone display-zone-analyses">
-            <h2>pas d'information pour les analyses</h2>
-        </div>
+        <div class="display-zone display-zone-ventes">
 
+            <div>
+
+                <div class="container-table-ventes">
+                    <h3>ventes</h3>
+                    <table class="table-ventes">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Nom du client</th>
+                                <th>Produits</th>
+                                <th>Quantité</th>
+                                <th>Prix Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <p class="text-default-ventes">vous n'avez aucune vente pour l'instant</p>
+                </div>
+
+                <div class="container-apercu-ventes">
+                    <h3>Revenus récents</h3>
+
+                    <div class="container-apercu-produits-ventes">
+                        <div>
+                            <span>Coût achat</span>
+                            <span id="cout-achat-dom">00</span>
+                        </div>
+
+                        <div>
+                            <span>Revenus</span>
+                            <span id="revenus-dom">00</span>
+                        </div>
+                    </div>
+
+                    <div class="container-chart-apercu-ventes">
+                        <canvas id="chart-ventes" width="100%" height="100%"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
         <div class="display-zone display-zone-clients">
             <h2>pas d'information sur les clients</h2>
         </div>
