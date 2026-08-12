@@ -322,27 +322,6 @@ a {
     flex-direction: column;
   }
 }
-
-@media (max-width: 620px) {
-  .home-header {
-    padding: 1rem;
-  }
-
-  .home-actions {
-    width: 100%;
-    justify-content: stretch;
-  }
-
-  .home-action-link,
-  .home-action-button {
-    width: 100%;
-  }
-
-  .hero-copy h1 {
-    font-size: 2.4rem;
-  }
-}
-
 .card, .header{
     transition: opacity .3s ease-out, translate .3s ease-out, scale .2s ease-out;
     translate: 0 40px;
@@ -355,4 +334,25 @@ a {
 .showCard{
     translate: 0 0;
     opacity: 1;
+}
+
+
+@media (max-width: 620px) {
+  .home-header {
+    padding: 1rem;
+  }
+
+  .home-actions, .home-nav{
+    display: none;
+  }
+
+
+  .home-action-link,
+  .home-action-button {
+    width: 100%;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.4rem;
+  }
 }
