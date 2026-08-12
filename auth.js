@@ -19,7 +19,7 @@ const secInscription = document.querySelector(".inscription-sec");
 const secConnexion = document.querySelector(".connexion-sec");
 
 const dashboard = document.querySelector(".dashboard");
- export const sectionActive = {}
+ const sectionActive = {}
 
 const formStateInscription = {
   name: false,

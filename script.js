@@ -1250,7 +1250,37 @@ console.log(btnClique)
   }
 })
 
-//information nav-bar
+//animation au scroll
 
+    const cards = document.querySelectorAll(".card");
+    const headers = document.querySelectorAll(".header")
+
+    function animateCard() {
+      cards.forEach((c) => {
+        const cardTop = c.getBoundingClientRect().top;
+        const pageHeight = window.innerHeight;
+        if (cardTop < pageHeight * .85) {
+          c.classList.add("showCard")
+        } else {
+          c.classList.remove("showCard")
+        }
+
+      })
+
+      headers.forEach((c) => {
+        const cardTop = c.getBoundingClientRect().top;
+        const pageHeight = window.innerHeight;
+        if (cardTop < pageHeight * .85) {
+          c.classList.add("showCard")
+        } else {
+          c.classList.remove("showCard")
+        }
+
+      })
+    }
+
+    document.addEventListener("scroll", animateCard)
+    document.addEventListener("DOMContentLoaded", animateCard)
+    document.addEventListener("resize", animateCard)
 
 
