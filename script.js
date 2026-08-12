@@ -4,24 +4,34 @@ const showSecInscription = document.querySelector("#show-sec-inscription");
 const showSecConnexion = document.querySelector("#show-sec-connexion");
 const secInscription = document.querySelector(".inscription-sec");
 const secConnexion = document.querySelector(".connexion-sec");
+const dashboard = document.querySelector(".dashboard");
 
 secConnexion.classList.add("secConnexionInvisible");
 secInscription.classList.add("secInscriptionVisible");
 
 //afficher et masquer les sections inscription et connexion
 showSecConnexion.addEventListener("click", () => {
+  showConnexionSection();
+});
+
+showSecInscription.addEventListener("click", () => {
+  showInscriptionSection();
+});
+
+function showConnexionSection() {
   secInscription.classList.add("secInscriptionInvisible");
   secInscription.classList.remove("secInscriptionVisible");
   secConnexion.classList.add("secConnexionVisible");
   secConnexion.classList.remove("secConnexionInvisible");
-});
+}
 
-showSecInscription.addEventListener("click", () => {
+function showInscriptionSection() {
   secConnexion.classList.add("secConnexionInvisible");
   secConnexion.classList.remove("secConnexionVisible");
   secInscription.classList.add("secInscriptionVisible");
   secInscription.classList.remove("secInscriptionInvisible");
-});
+}
+
 
 //afficher et masquer les tooltips de la nav-bar
 
@@ -29,6 +39,22 @@ const notificationNavBar = document.querySelector(".notification-nav-bar");
 const settingsNavBar = document.querySelector(".settings-nav-bar");
 const userProfilNavBar = document.querySelector(".user-profil-nav-bar");
 const userInfosNavBar = document.querySelector(".user-infos-nav-bar");
+userInfosNavBar.addEventListener("click", (event) =>{
+  const eltClique = event.target;
+  if(!eltClique) return;
+  const btnEltClique = event.target.closest("div") || event.target.closest("img")
+    if(btnEltClique ===  notificationNavBar){
+      notificationNavBar.classList.toggle("showTooltip")
+    }
+  })
+
+
+document.addEventListener("click", (e) => {
+  if (!userInfosNavBar.contains(e.target)) {
+      if(notificationNavBar.classList.contains("showTooltip")) notificationNavBar.classList.remove("showTooltip");
+    }
+
+});
 
 const utilisateur = {
   totalProduits: 0,
@@ -71,7 +97,7 @@ const utilisateur = {
     Alimentation: 0,
     Automobile: 0,
     Vestimentaire: 0,
-    Autres: 0
+    Autres: 0,
   },
   revenusRecents: {
     coutAchat: 0,
@@ -95,71 +121,96 @@ const utilisateur = {
 
   updateStocks: function () {
     const produits = this.produits;
-    const  produitsStock = produits.map(p => ({nom: p.nom, categorie: p.categorie, prix: p.quantite * p.prixAchat, stock: p.quantite }))
+    const produitsStock = produits.map((p) => ({
+      nom: p.nom,
+      categorie: p.categorie,
+      prix: Number(p.quantite * p.prixAchat),
+      stock: Number(p.quantite),
+    }));
     this.stocks = [...produitsStock];
     return produitsStock;
   },
-  updateVentesRecentesDashboard: function(vente) {
-    if(this.ventesRecentesDashboard.length > 3){
-      this.ventesRecentesDashboard.pop()
-      this.ventesRecentesDashboard.unshift(vente)
-    }else{
+  updateVentesRecentesDashboard: function (vente) {
+    if (this.ventesRecentesDashboard.length > 3) {
+      this.ventesRecentesDashboard.pop();
+      this.ventesRecentesDashboard.unshift(vente);
+    } else {
       this.ventesRecentesDashboard.unshift(vente);
     }
-    const tableVentesRecentes = document.querySelector(".table-ventes-recentes tbody");
-    const textDefaultVentesdashboard = document.querySelector(".text-default-vente-dashboard");
+    const tableVentesRecentes = document.querySelector(
+      ".table-ventes-recentes tbody",
+    );
+    const textDefaultVentesdashboard = document.querySelector(
+      ".text-default-vente-dashboard",
+    );
 
     tableVentesRecentes.innerHTML = "";
-    this.ventesRecentesDashboard.forEach(v => {
+    this.ventesRecentesDashboard.forEach((v) => {
       ajouterVente(v, tableVentesRecentes, textDefaultVentesdashboard);
-    })
+    });
   },
-  updateApercuStocks: function(){
-    const totalProd = this.produits.reduce((acc, produit) => acc + Number(produit["quantite"]), 0);
+  updateApercuStocks: function () {
+    const totalProd = this.produits.reduce(
+      (acc, produit) => acc + Number(produit["quantite"]),
+      0,
+    );
     this.apercuStocks["totalProduits"] = totalProd;
     this.apercuStocks["totalVentes"] = this.ventes.length;
 
-    const indDernierElt = this.ventes.length - 1
-    this.apercuStocks["derniereVente"] = this.ventes[indDernierElt]?.prixTotal ?? 0;
+    const indDernierElt = this.ventes.length - 1;
+    this.apercuStocks["derniereVente"] =
+      this.ventes[indDernierElt]?.prixTotal ?? 0;
     this.apercuStocks["produitsStock"] = this.stocks.length;
 
-
-    const apercuTotalProduits = document.querySelector("#apercu-total-produits");
+    const apercuTotalProduits = document.querySelector(
+      "#apercu-total-produits",
+    );
     const apercuTotalVentes = document.querySelector("#apercu-total-ventes");
-    const apercuDerniereVente = document.querySelector("#apercu-derniere-vente");
-    const apercuProduitsStock = document.querySelector("#apercu-produits-stock");
+    const apercuDerniereVente = document.querySelector(
+      "#apercu-derniere-vente",
+    );
+    const apercuProduitsStock = document.querySelector(
+      "#apercu-produits-stock",
+    );
 
     apercuTotalProduits.textContent = this.apercuStocks["totalProduits"];
     apercuTotalVentes.textContent = this.apercuStocks["totalVentes"];
     apercuDerniereVente.textContent = this.apercuStocks["derniereVente"];
     apercuProduitsStock.textContent = this.apercuStocks["produitsStock"];
-
   },
-  updateCategorieStock: function(stock) {
+  updateCategorieStock: function (stock) {
+    
     this.catergorieStock[stock.categorie] += 1;
     const data = Object.values(this.catergorieStock);
     const dataBarVentes = [...data];
-    addData(ctxApercuVentes, dataBarVentes)
-    addData(ctxVentes, dataBarVentes)
+    addData(ctxApercuVentes, dataBarVentes);
+    addData(ctxVentes, dataBarVentes);
   },
-  updateRevenusRecents: function(){
-    this.inventaireMois['quantitevendue'] = 0;
+  updateRevenusRecents: function () {
+    this.inventaireMois["quantitevendue"] = 0;
     this.produitsvendus = [];
 
     const prixAchat = this.ventes.reduce((acc, vente) => {
-      const totalAchatVente = Object.entries(vente.infosProduits || {}).reduce((somme, [nomProduit, quantite]) => {
-        const produitReference = this.produits.find((pp) => pp.nom === nomProduit);
-        if (!produitReference) return somme;
+      const totalAchatVente = Object.entries(vente.infosProduits || {}).reduce(
+        (somme, [nomProduit, quantite]) => {
+          const produitReference = this.produits.find(
+            (pp) => pp.nom === nomProduit,
+          );
+          if (!produitReference) return somme;
 
-        const produitt = {}
-        produitt[produitReference.nom] = quantite;
+          const produitt = {};
+          produitt[produitReference.nom] = quantite;
 
-        this.produitsvendus.push(produitt);
+          this.produitsvendus.push(produitt);
 
-        this.inventaireMois['quantitevendue'] += Number(quantite);
+          this.inventaireMois["quantitevendue"] += Number(quantite);
 
-        return somme + Number(quantite) * Number(produitReference.prixAchat || 0);
-      }, 0);
+          return (
+            somme + Number(quantite) * Number(produitReference.prixAchat || 0)
+          );
+        },
+        0,
+      );
 
       return acc + totalAchatVente;
     }, 0);
@@ -180,10 +231,10 @@ const utilisateur = {
       ? (revenusDom.textContent = "00")
       : (revenusDom.textContent = this.revenusRecents["revenus"]);
   },
-  updateActiviteRecente: function(){
+  updateActiviteRecente: function () {
     this.activiteRecentes["stockTotal"] = this.stocks.length;
     this.activiteRecentes["produitsTotal"] = this.apercuStocks["totalProduits"];
-    this.activiteRecentes['commandesTotal'] = this.commandes.length ;
+    this.activiteRecentes["commandesTotal"] = this.commandes.length;
     this.activiteRecentes["revenusTotal"] = this.revenusRecents["revenus"];
 
     const actStockTotal = document.querySelector("#act-stock-total");
@@ -191,32 +242,32 @@ const utilisateur = {
     const actCommandesTotal = document.querySelector("#act-commandes-total");
     const actRevenusTotauux = document.querySelector("#act-revenus-totaux");
 
-    actStockTotal.textContent = this.activiteRecentes["stockTotal"] ?? "00"
-    actProduitTotal.textContent = this.activiteRecentes["produitsTotal"] ?? "00"
-    actCommandesTotal.textContent = this.activiteRecentes["commandesTotal"] ?? "00"
-    actRevenusTotauux.textContent = this.activiteRecentes["revenusTotal"] ?? "00"
-
+    actStockTotal.textContent = this.activiteRecentes["stockTotal"] ?? "00";
+    actProduitTotal.textContent =
+      this.activiteRecentes["produitsTotal"] ?? "00";
+    actCommandesTotal.textContent =
+      this.activiteRecentes["commandesTotal"] ?? "00";
+    actRevenusTotauux.textContent =
+      this.activiteRecentes["revenusTotal"] ?? "00";
   },
 
-  updateInventaireMois: function(){
-    this.inventaireMois['quantiteTotale'] = this.apercuStocks['totalProduits'];
-    const invQuantiteTotal = document.querySelector('#inv-quantite-total');
+  updateInventaireMois: function () {
+    this.inventaireMois["quantiteTotale"] = this.apercuStocks["totalProduits"];
+    const invQuantiteTotal = document.querySelector("#inv-quantite-total");
     const invQuantiteVendue = document.querySelector("#inv-quantite-vendue");
 
-    invQuantiteTotal.textContent = this.inventaireMois['quantiteTotale'];
+    invQuantiteTotal.textContent = this.inventaireMois["quantiteTotale"];
     invQuantiteVendue.textContent = this.inventaireMois["quantitevendue"];
-
   },
-  updateProduitsPlusVendus: function(){
-
+  updateProduitsPlusVendus: function () {
     const produitsTotalQuantite = {};
-    
-    this.produitsvendus.forEach(produit => {
+
+    this.produitsvendus.forEach((produit) => {
       Object.entries(produit).forEach(([nom, quantite]) => {
-        produitsTotalQuantite[nom] = (produitsTotalQuantite[nom] || 0) + Number(quantite);
+        produitsTotalQuantite[nom] =
+          (produitsTotalQuantite[nom] || 0) + Number(quantite);
       });
     });
-    
 
     const quatrePlus = Object.entries(produitsTotalQuantite)
       .sort((a, b) => b[1] - a[1])
@@ -225,49 +276,16 @@ const utilisateur = {
         obj[nom] = quantite;
         return obj;
       }, {});
-    
+
     const nomQuatre = Object.keys(quatrePlus);
     const quantiteQuatre = Object.values(quatrePlus);
-    this.produitsPlusVendus = {...quatrePlus};
+    this.produitsPlusVendus = { ...quatrePlus };
     addData(ctxPlusVentes, quantiteQuatre);
     addLabels(ctxPlusVentes, nomQuatre);
-    ajouterProduitPlusvendus(nomQuatre, quantiteQuatre)
-  }
+    ajouterProduitPlusvendus(nomQuatre, quantiteQuatre);
+  },
 };
 
-const userInfosArray = [notificationNavBar, settingsNavBar, userProfilNavBar];
-
-function showTooltipNavBar(eltClique) {
-  for (let elt of userInfosArray) {
-    if (elt !== eltClique) {
-      if (elt.classList.contains("showTooltip")) {
-        elt.classList.remove("showTooltip");
-        elt.classList.remove("userInfosActif");
-      }
-    }
-  }
-  eltClique.classList.toggle("showTooltip");
-  if (eltClique !== userInfosNavBar)
-    eltClique.classList.toggle("userInfosActif");
-}
-
-userInfosNavBar.addEventListener("click", (e) => {
-  e.stopPropagation();
-  const eltClique = e.target.closest("div");
-  if (!eltClique) return;
-  showTooltipNavBar(eltClique);
-});
-
-document.addEventListener("click", (e) => {
-  if (!userInfosNavBar.contains(e.target)) {
-    for (let elt of userInfosArray) {
-      if (elt.classList.contains("showTooltip")) {
-        elt.classList.remove("showTooltip");
-        elt.classList.remove("userInfosActif");
-      }
-    }
-  }
-});
 
 //affichage du chart dans le canvas
 const myChartVentes = document.querySelector("#chart-ventes");
@@ -389,22 +407,18 @@ const ctxApercuVentes = new Chart(myChartApercuVentes, {
         display: false,
       },
     },
-
   },
 });
 
-
 function addData(chart, newData) {
-    chart.data.datasets[0].data = [...newData];
-    chart.update();
+  chart.data.datasets[0].data = [...newData];
+  chart.update();
 }
 
 function addLabels(chart, newLabels) {
-    chart.data.labels = [...newLabels];
-    chart.update();
+  chart.data.labels = [...newLabels];
+  chart.update();
 }
-
-
 
 //afficher et masquer les sections de l'aside
 const displayZoneArray = Array.from(document.querySelectorAll(".display-zone"));
@@ -557,8 +571,11 @@ function initFormAjouterProduit() {
       ajouterProduitSelect(produit);
 
       containerAjouterProduit.classList.remove("showFormAjouterProduit");
+
       formAjouterProduit.reset();
+
       textDefaultAjouterProduit.style.display = "none";
+
       utilisateur.updateProduits(produit);
 
       createStock();
@@ -588,7 +605,7 @@ containerAjouterProduit.addEventListener("click", (e) => {
   }
 });
 
-function ajouterProduitSelect(produit){
+function ajouterProduitSelect(produit) {
   const listeProduits = document.querySelector("#produits-commande");
   const option = document.createElement("option");
   option.textContent = `${produit.nom}  ${produit.prixVente}`;
@@ -596,9 +613,6 @@ function ajouterProduitSelect(produit){
   option.setAttribute("data-price", `${produit.prixVente}`);
   listeProduits.appendChild(option);
 }
-
-
-
 
 //ajouter une commande
 
@@ -736,7 +750,6 @@ function handleAjouterProduit() {
   const prixProduit = selectedOption.dataset.price || "0";
 
   if (!ArrayProduitsSelectionnes.includes(nomProduit) && prixProduit !== "0") {
-
     const produit = createProduitCommande(nomProduit, prixProduit);
 
     ArrayProduitsSelectionnes.push(nomProduit);
@@ -792,6 +805,11 @@ produitAjouteListe.addEventListener("click", (event) => {
 
   if (eltClique.classList.contains("supprimerProduit")) {
     removeProduitCommande(parent, parentName);
+    checkStockQuantity(
+      ArrayProduitsSelectionnes,
+      infosProduitsCree,
+      utilisateur.stocks,
+    );
     return;
   }
 
@@ -800,9 +818,14 @@ produitAjouteListe.addEventListener("click", (event) => {
   if (eltClique.classList.contains("augmenterProduit")) {
     produitsCree[parentName].augmneterQuantite();
 
-    infosProduitsCree[parentName] += 1
+    infosProduitsCree[parentName] += 1;
 
     updateProduitCommandeUI(parent, produitsCree[parentName]);
+    checkStockQuantity(
+      ArrayProduitsSelectionnes,
+      infosProduitsCree,
+      utilisateur.stocks,
+    );
     return;
   }
 
@@ -814,10 +837,52 @@ produitAjouteListe.addEventListener("click", (event) => {
     } else {
       updateProduitCommandeUI(parent, produitsCree[parentName]);
       infosProduitsCree[parentName] -= 1;
+      checkStockQuantity(
+        ArrayProduitsSelectionnes,
+        infosProduitsCree,
+        utilisateur.stocks,
+      );
     }
     return;
   }
 });
+
+function checkStockQuantity(
+  produitsAjoutes,
+  quantiteProduitsAjoutes,
+  produitsEnStock,
+) {
+  const existingMessage = formAjouterCommande.querySelector(".invalidProd");
+  if (existingMessage) {
+    existingMessage.remove();
+    BtnAjouterProduitListe.disabled = false;
+    BtnAjouterProduitListe.style.opacity = "1";
+    formStateAjouterCommande.produitSelectionne = true;
+    isValidFormCommande()
+  }
+  produitsAjoutes.forEach((prod) => {
+    const produit = produitsEnStock.find((p) => p.nom === prod);
+    const quantiteDemandee = Number(quantiteProduitsAjoutes[prod]);
+    const stockDisponible = Number(produit?.stock);
+
+    if (quantiteDemandee > stockDisponible) {
+      const texte = document.createElement("p");
+      texte.classList.add("invalidProd");
+      texte.textContent = `Dépassement de quantité pour le produit ${prod} (disponible : ${stockDisponible}, demandé : ${quantiteDemandee}`;
+      formAjouterCommande.insertBefore(
+        texte,
+        produitAjouteListe.nextElementSibling,
+      );
+      BtnAjouterProduitListe.disabled = true;
+      btnAjouterCommandeForm.disabled = true;
+      BtnAjouterProduitListe.style.opacity = "0.5";
+      btnAjouterCommandeForm.style.opacity = "0.5";
+      formStateAjouterCommande.produitSelectionne = false;
+      isValidFormCommande()
+    }
+  });
+}
+
 
 function isValidFormCommande() {
   const valid =
@@ -875,7 +940,7 @@ function createCommande() {
     quantite: ArrayProduitsSelectionnes.length,
     prixTotal: prixTotalCommande.textContent,
     dateCommande: dateCommande.value,
-    infosProduits: {...infosProduitsCree},
+    infosProduits: { ...infosProduitsCree },
   };
   return commande;
 }
@@ -905,7 +970,9 @@ function resetFormCommande() {
 
   ArrayProduitsSelectionnes.length = 0;
   Object.keys(produitsCree).forEach((key) => delete produitsCree[key]);
-  Object.keys(infosProduitsCree).forEach( (key) => delete infosProduitsCree[key])
+  Object.keys(infosProduitsCree).forEach(
+    (key) => delete infosProduitsCree[key],
+  );
 
   AjoutProduitListe.nbreProduit = 0;
   AjoutProduitListe.montantTotalCommande = 0;
@@ -924,7 +991,7 @@ function resetFormCommande() {
   initFormCommande();
 }
 
-//modifier une commande 
+//modifier une commande
 tableCommande.addEventListener("click", (e) => {
   const btn = e.target.closest(".btn-action-commande");
   if (!btn) return;
@@ -962,55 +1029,60 @@ tableCommande.addEventListener("click", (e) => {
   btn.parentElement.appendChild(div);
 });
 
-document.addEventListener('click', (e) => {
-  if (e.target.closest('.btn-action-commande') || e.target.closest('.action-commande-menu')) return;
-  const openMenus = document.querySelectorAll('.action-commande-menu');
+document.addEventListener("click", (e) => {
+  if (
+    e.target.closest(".btn-action-commande") ||
+    e.target.closest(".action-commande-menu")
+  )
+    return;
+  const openMenus = document.querySelectorAll(".action-commande-menu");
   openMenus.forEach((menu) => menu.remove());
 });
 
-
-
 //ajouter un stock
 
-function createStock(){
+function createStock() {
   const produitsStock = utilisateur.updateStocks();
-  const tableStocks = document.querySelector(".table-stocks tbody")
+  const tableStocks = document.querySelector(".table-stocks tbody");
   const dernierElt = produitsStock.length - 1;
-  const produit = produitsStock[dernierElt]
+  const produit = produitsStock[dernierElt];
   const tr = document.createElement("tr");
-    tr.innerHTML = `
+  tr.innerHTML = `
     <td>${produit.nom}</td>
     <td>${produit.categorie}</td>
     <td>${produit.prix}</td>
     <td>${produit.stock}</td>
-    `
-    tableStocks.prepend(tr);
+    `;
+  tableStocks.prepend(tr);
 
-    utilisateur.updateCategorieStock(produit);
+  utilisateur.updateCategorieStock(produit);
 
-    utilisateur.updateActiviteRecente();
+  utilisateur.updateActiviteRecente();
 
-    utilisateur.updateInventaireMois();
+  utilisateur.updateInventaireMois();
 
   document.querySelector(".text-default-stocks").style.display = "none";
 }
 
 //ajouter une vente
 
-function createVente(elementCommande, idParent){
-  const commande = utilisateur.commandes.find(cmd => cmd.idCommande === idParent);
+function createVente(elementCommande, idParent) {
+  const commande = utilisateur.commandes.find(
+    (cmd) => cmd.idCommande === idParent,
+  );
   const vente = {
     date: commande.dateCommande,
     nomclient: commande.nomClient,
     produits: [...commande.produitsCommande],
     quantite: commande.quantite,
     prixTotal: commande.prixTotal,
-    infosProduits: {...commande.infosProduits},
-  }
-  elementCommande.classList.add('commandeValide');
+    infosProduits: { ...commande.infosProduits },
+  };
+  elementCommande.classList.add("commandeValide");
   utilisateur.ventes.push(vente);
   utilisateur.updateVentesRecentesDashboard(vente);
 
+  updateStockAfterSale(vente);
 
   const tableVentes = document.querySelector(".table-ventes tbody");
   const textDefaultVentes = document.querySelector(".text-default-ventes");
@@ -1021,31 +1093,76 @@ function createVente(elementCommande, idParent){
 
   utilisateur.updateActiviteRecente();
 
-  utilisateur.updateProduitsPlusVendus()
+  utilisateur.updateProduitsPlusVendus();
   return commande;
-
 }
 
-function ajouterVente(vente, table, text){
-  
+function updateStockAfterSale(vente) {
+  if (!vente.infosProduits || Object.keys(vente.infosProduits).length === 0) {
+    return;
+  }
+
+  Object.entries(vente.infosProduits).forEach(([nomProduit, quantiteVendue]) => {
+    const produitIndex = utilisateur.produits.findIndex(
+      (p) => p.nom === nomProduit
+    );
+
+    if (produitIndex !== -1) {
+      const quantiteActuelle = Number(utilisateur.produits[produitIndex].quantite);
+      const newQuantite = Math.max(0, quantiteActuelle - quantiteVendue);
+      utilisateur.produits[produitIndex].quantite = String(newQuantite);
+
+      updateProduitTableQuantity(nomProduit, newQuantite);
+      updateStockTableQuantity(nomProduit, newQuantite);
+    }
+  });
+
+  utilisateur.updateStocks();
+}
+
+function updateProduitTableQuantity(nomProduit, quantite) {
+  const rows = document.querySelectorAll(".table-produits tbody tr");
+  rows.forEach((row) => {
+    const nameCell = row.querySelector("td:first-child");
+    if (nameCell && nameCell.textContent.trim() === nomProduit) {
+      const quantityCell = row.querySelectorAll("td")[3];
+      if (quantityCell) {
+        quantityCell.textContent = quantite;
+      }
+    }
+  });
+}
+
+function updateStockTableQuantity(nomProduit, quantite) {
+  const rows = document.querySelectorAll(".table-stocks tbody tr");
+  rows.forEach((row) => {
+    const nameCell = row.querySelector("td:first-child");
+    if (nameCell && nameCell.textContent.trim() === nomProduit) {
+      const quantityCell = row.querySelectorAll("td")[3];
+      if (quantityCell) {
+        quantityCell.textContent = quantite;
+      }
+    }
+  });
+}
+
+function ajouterVente(vente, table, text) {
   const tr = document.createElement("tr");
-    tr.innerHTML = `
+  tr.innerHTML = `
     <td>${vente.date}</td>
     <td>${vente.nomclient}</td>
     <td>${vente.produits.join(", ")}</td>
     <td>${vente.quantite}</td>
     <td>${vente.prixTotal}</td>
     `;
-    table.prepend(tr);
-    text.style.display = 'none';
+  table.prepend(tr);
+  text.style.display = "none";
 }
 
-
 tableCommande.addEventListener("click", (e) => {
- 
   const validerElt = e.target.closest(".valider-commande");
   const annulerElt = e.target.closest(".annuler-commande");
-  const actionCommandeMenu = e.target.closest('.action-commande-menu');
+  const actionCommandeMenu = e.target.closest(".action-commande-menu");
   if (!validerElt && !annulerElt) return;
 
   const parentTr = e.target.closest("tr");
@@ -1053,7 +1170,7 @@ tableCommande.addEventListener("click", (e) => {
 
   const actionBtn = parentTr.querySelector(".btn-action-commande");
   const idParent = actionBtn?.dataset?.parent;
-  if (!idParent) return;  
+  if (!idParent) return;
 
   if (validerElt) {
     createVente(parentTr, idParent);
@@ -1068,18 +1185,25 @@ tableCommande.addEventListener("click", (e) => {
   }
 
   if (annulerElt) {
-    const idx = utilisateur.commandes.findIndex((c) => c.idCommande === idParent);
+    const idx = utilisateur.commandes.findIndex(
+      (c) => c.idCommande === idParent,
+    );
     if (idx !== -1) utilisateur.commandes.splice(idx, 1);
     parentTr.remove();
+
+    const nbreCommandes = document.querySelector(".commande-total");
+    utilisateur.commandes.length > 1
+      ? (nbreCommandes.textContent = `${utilisateur.commandes.length} commandes`)
+      : (nbreCommandes.textContent = `${utilisateur.commandes.length} commande`);
     return;
   }
 });
 
-function ajouterProduitPlusvendus(tabNom, tabValeur){
+function ajouterProduitPlusvendus(tabNom, tabValeur) {
   const table = document.querySelector(".table-produits-plus-vendus tbody");
-  table.innerHTML = '';
+  table.innerHTML = "";
   if (tabNom.length === 0) return;
-  for(let i = 0; i < tabNom.length; i++){
+  for (let i = 0; i < tabNom.length; i++) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
     <td>${tabNom[i]}</td>
@@ -1087,5 +1211,46 @@ function ajouterProduitPlusvendus(tabNom, tabValeur){
     `;
     table.appendChild(tr);
   }
-  document.querySelector(".text-default-produits-plus-vendus").style.display = 'none';
+  document.querySelector(".text-default-produits-plus-vendus").style.display =
+    "none";
 }
+
+
+//se deconnecter
+
+const btnGetOut =  document.querySelector(".btn-get-out");
+const seDecconnecterSec = document.querySelector(".se-deconnecter-sec");
+btnGetOut.addEventListener("click", () =>{
+  seDecconnecterSec.classList.add("showSecGetOut");
+})
+
+seDecconnecterSec.addEventListener("click", (event) =>{
+
+
+  if(event.target === seDecconnecterSec){
+    seDecconnecterSec.classList.remove("showSecGetOut");
+    return
+  }
+
+  const btnClique = event.target.closest("button");
+  if(!btnClique) return;
+
+console.log(btnClique)
+  if( btnClique.classList.contains("btn-se-deconnecter-annuler") ){
+    seDecconnecterSec.classList.remove("showSecGetOut");
+    return
+  }
+
+  if( btnClique.classList.contains("btn-se-deconnecter-ok") ){
+      seDecconnecterSec.classList.remove("showSecGetOut");
+      secConnexion.classList.add('secConnexionVisible');
+      secConnexion.classList.remove('secConnexionInvisible');
+      dashboard.classList.remove("showDashboard")
+      return
+  }
+})
+
+//information nav-bar
+
+
+

@@ -19,6 +19,9 @@ const secInscription = document.querySelector(".inscription-sec");
 const secConnexion = document.querySelector(".connexion-sec");
 
 const dashboard = document.querySelector(".dashboard");
+ export const sectionActive = {}
+
+
 
 const formStateInscription = {
   name: false,
@@ -137,9 +140,13 @@ function initFormInscription() {
     setTimeout(() => {
 
       if( validateEmail() ){
+
         createPopUp("inscription réussie", "popUpValid");
+
         secInscription.classList.add('secInscriptionInvisible');
+
         secInscription.classList.remove('secInscriptionVisible');
+
         dashboard.classList.add("showDashboard")
         createUser();
         formInscription.reset();
@@ -177,6 +184,12 @@ function formatDatas(form) {
 //stockter l'utilisateur dans le stockage local
 function createUser() {
   const userDatas = formatDatas(formInscription);
+
+  sectionActive['nomUser'] = [userDatas.nom, userDatas.prenom];
+  const userNameNavBar = document.querySelector(".user-name-nav-bar");
+
+  userNameNavBar.textContent = `${sectionActive["nomUser"][0]} ${(sectionActive["nomUser"]?.[1])?.substring(0, 1)}.`;
+
   localStorage.setItem(userDatas.email, JSON.stringify(userDatas));
 }
 
@@ -222,11 +235,15 @@ function initFormConnexion() {
     btnConnexion.disabled = true;
     setTimeout(() =>{
       if (checkUser()) {
+
         createPopUp("connexion réussie", "popUpValid");
+
         secConnexion.classList.remove('secConnexionVisible');
+
         secConnexion.classList.add('secConnexionInvisible');
         dashboard.classList.add("showDashboard")
       } else {
+        delete sectionActive["nomUser"];
         createPopUp("Aucun compte trouvé, veuillez ressayer", "popUpInvalid");
       }
       textBtn.textContent = "Se connecter"
@@ -242,6 +259,12 @@ initFormConnexion();
 function checkUser() {
   const userDatasFormated = formatDatas(formConnexion);
   const localDatas = JSON.parse(localStorage.getItem(userDatasFormated.email) || "null");
+
+
+  sectionActive['nomUser'] = [localDatas.nom, localDatas.prenom];
+ const userNameNavBar = document.querySelector(".user-name-nav-bar");
+ 
+  userNameNavBar.textContent = `${sectionActive["nomUser"][0]} ${(sectionActive["nomUser"]?.[1])?.substring(0, 1)}.`;
 
   if (localDatas !== null) {
     return (

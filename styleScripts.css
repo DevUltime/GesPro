@@ -1,6 +1,6 @@
 :root {
   /*colors*/
-  --primary-red: #d75b95;
+  --primary-red: #68D391;
   --primary-blue: #45b1f0;
   --primary-purple: #d4e1ea;
   --dark-navy: #1d2d50;
@@ -49,32 +49,32 @@
     border-top: 4px solid rgb(102, 255, 179);
     padding: 10px 20px;
     font-size: .8rem;
-    width: 150px;
+    width: 200px;
     position: fixed;
     right: 20px;
     bottom: 80px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px #45b1f049;
     animation: debounce .3s ease-in-out;
+    border-radius: 4px;
 }
 .popUpInvalid{
     border-top: 4px solid rgb(255, 0, 119);
     padding: 10px 20px;
     font-size: .8rem;
-    width: 150px;
+    width: 200px;
     position: fixed;
     right: 20px;
     bottom: 80px;
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px #45b1f049;
     animation: debounce .3s ease-in-out;
+     border-radius: 4px;
 }
 @keyframes debounce {
     0%{translate: 0 20px;}
     80%{translate: 0 -10px;}
     100%{translate: 0 0;}
 }
-.notification-nav-bar.showTooltip::after,
-.settings-nav-bar.showTooltip::after,
-.user-profil-nav-bar.showTooltip::after{
+.notification-nav-bar.showTooltip::after{
     display: block;
     animation: translateAnimation .3s forwards;
 }
@@ -85,13 +85,25 @@
     }
 }
 
-.userInfosActif{
-    background-color: color-mix(in srgb, var(--primary-blue) 20%, transparent);
-}
 
 .displayZoneActive{
     display: flex;
 }
 .commandeValide{
     background-color: color-mix(in srgb, var(--color-valid) 10%, transparent);
+}
+.invalidProd{
+    margin-top: -6px;
+    font-size: .6rem;
+    color: rgb(255, 0, 119);
+}
+
+.showSecGetOut{
+    display: flex;
+    animation: getOutSecAnimation .2s forwards;
+}
+@keyframes getOutSecAnimation {
+    to {
+        scale: 1;
+    }
 }

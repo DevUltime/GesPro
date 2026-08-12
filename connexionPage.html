@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script defer src="auth.js" type="module"></script>
+    <script defer src="script.js" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styleScripts.css">
+
+    <title>GesPro</title>
+</head>
+
+<body>
+    <section class="sec-accueil inscription-sec">
+            <div class="card-formulaire card-formulaire-inscription">
+                <form action="" class="formulaire formulaire-inscription">
+                    <h2>Créer un compte</h2>
+                    <p class="notice">Les champs marqués sont <span>*</span> sont obligatoires</p>
+                    <label for="name">Nom <span aria-hidden="true">*</span></label>
+                    <input type="text" id="name" name="Nom" autocomplete="family-name">
+                    <p class="msg-erreur msg-erreur-name">Le nom doit contenir minimum 3 caractères</p>
+                    <label for="surname">Prénom</label>
+                    <input type="text" id="surname" name="Prenom" autocomplete="given-name">
+                    <label for="email">Email <span aria-hidden="true">*</span></label>
+                    <input type="email" name="Email" id="email" autocomplete="email">
+                    <p class="msg-erreur msg-erreur-email">Entrez une adresse mail valide</p>
+                    <label for="password">Mot de passe <span aria-hidden="true">*</span></label>
+                    <input type="password" name="Password" id="password" autocomplete="new-password">
+                    <p class="msg-erreur msg-erreur-password">Le mot de passe doit avoir minimum 6 caractères</p>
+                    <label for="confirm-password">Confirmer le mot de passe <span aria-hidden="true">*</span></label>
+                    <input type="password" name="ConfirmPassword" id="confirm-password" autocomplete="new-password">
+                    <p class="msg-erreur msg-erreur-confirm-password">La valeur doit être identique au mot de passe</p>
+                    <label class="termes-contrat"><input type="checkbox" id="check-terms">
+                        <p>En vous inscrivant, vous accepter <a href="#">la politique
+                                d'utilisation</a> et <a href="#">les termes de contrat</p></a>
+                    </label>
+                    <button class="btn-accueil btn-inscription" type="submit"><span class="text-btn">Créer un
+                            compte</span>
+                    </button>
+                    <p style="text-align: right; font-size: 0.6rem;">avez-vous déjà un compte ? <a href="#"
+                            id="show-sec-connexion">Se connecter</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="sec-accueil connexion-sec">
+            <div class="card-formulaire card-formulaire-connexion">
+                <form action="" class="formulaire formulaire-connexion">
+                    <h2>Se connecter</h2>
+                    <label for="connexion-email">Email </label>
+                    <input type="email" name="Email" id="connexion-email" autocomplete="email">
+                    <label for="connexion-password">Mot de passe</label>
+                    <input type="password" name="Password" id="connexion-password" autocomplete="new-password">
+                    <button class="btn-accueil btn-connexion" type="submit"><span class="text-btn">Se connecter</span>
+                    </button>
+                    <p style="text-align: right; font-size: 0.6rem;">Êtes-vous nouveau ? <a href="#"
+                            id="show-sec-inscription">S'inscrire</a></p>
+                </form>
+            </div>
+        </div>
+    </section>
+    <section class="dashboard">
+
+        <div class="aside-bar">
+
+            <div class="logo">GesPro</div>
+
+            <div class="btns-aside-bar">
+                <button class="display-btn display-dashboard" aria-current="true"><img src="icons/dashboard.png"
+                        alt="">Dashboard</button>
+                <button class="display-btn display-produits"><img src="icons/product.png" alt="">Produits</button>
+                <button class="display-btn display-commandes"><img src="icons/purchase-order.png"
+                        alt="">Commandes</button>
+                <button class="display-btn display-stocks"><img src="icons/stock.png" alt="">Stocks</button>
+                <button class="display-btn display-ventes"><img src="icons/analyse.png" alt="">Ventes</button>
+                <button class="display-btn display-clients"><img src="icons/user.png" alt="">Clients</button>
+            </div>
+            <button class="btn-get-out"><img src="icons/logout.png" alt="">Se déconnecter</button>
+        </div>
+
+        <div class="nav-bar">
+            <div class="section-active-text">Dashboard</div>
+            <div class="search-bar">
+                <input type="text" placeholder="rechercher...">
+                <img src="icons/search.svg" alt="">
+            </div>
+            <div class="user-infos-nav-bar">
+                <div style="pointer-events: none;" class="user-name-nav-bar">User</div>
+
+                <div class="notification-nav-bar">
+                    <img src="icons/notification.png" alt="">
+                </div>
+
+                <div class="settings-nav-bar">
+                    <img src="icons/settings.svg" alt="">
+                </div>
+
+                <div class="user-profil-nav-bar">
+                    <img src="icons/account.png" alt="">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="display-zone display-zone-dashboard">
+            <div class="recent-activity">
+                <div class="container-recent-activity">
+                    <h2>Activités récentes</h2>
+                    <div>
+                        <div>
+                            <h3 id="act-stock-total">00</h3>
+                            <p>Qte</p>
+                            <p>Stock total</p>
+                        </div>
+                        <div>
+                            <h3 id="act-produit-total">00</h3>
+                            <p>Qte</p>
+                            <p>Produits total</p>
+                        </div>
+                        <div>
+                            <h3 id="act-commandes-total">00</h3>
+                            <p>Qte</p>
+                            <p>Commandes total</p>
+                        </div>
+                        <div>
+                            <h3 id="act-revenus-totaux">00</h3>
+                            <p>FCFA</p>
+                            <p>Revenus totaux</p>
+                        </div>
+
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="inventaire">
+                    <h2>Inventaire du mois</h2>
+                    <div>
+                        <div>
+                            <p>Quantité totale</p>
+                            <hr>
+                            <span id="inv-quantite-total">00</span>
+                        </div>
+
+                        <div>
+                            <p>Quantité vendue</p>
+                            <hr>
+                            <span id="inv-quantite-vendue">00</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="statistics">
+                <div class="ventes-recentes">
+                    <h2>ventes récentes</h2>
+                    <table class="table-ventes-recentes">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Client</th>
+                                <th>Produits</th>
+                                <th>Quantité</th>
+                                <th>Prix total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <p class="text-default-vente-dashboard">Pas de vente pour le moment</p>
+                </div>
+
+                <div class="produits-plus-vendus">
+                    <h2>Produits les plus vendus</h2>
+                    <table class="table-produits-plus-vendus">
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Quantité vendue</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                        <p class="text-default-produits-plus-vendus">Pas de produit pour le moment</p>
+                    </table>
+                    <div class="graphique-plus-ventes">
+                        <canvas aria-label="chart" aria-roledescription="img" id="chart-plus-ventes">
+                            courbes de l’évolution des produits plus vendus
+                        </canvas>
+                    </div>
+                </div>
+
+                <div class="graphique-ventes">
+                    <canvas aria-label="chart" aria-roledescription="img" id="chart-ventes">
+                        courbes de l’évolution des ventes
+                    </canvas>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="display-zone display-zone-produits">
+            <nav class="nav-produits">
+                <button class="btn-nav-produits btn-nav-produits-quantite">0 produit</button>
+                <button class="btn-nav-produits btn-nav-produits-exporter"><img src="icons/xls-export.png" alt="">
+                    Exporter</button>
+                <button class="btn-nav-produits btn-nav-produits-ajouter"><img src="icons/add.png" alt="">
+                    Ajouter</button>
+
+            </nav>
+            <div class="container-table-produits">
+                <table class="table-produits">
+                    <thead>
+                        <tr>
+                            <th>Nom du produit</th>
+                            <th>Id produit</th>
+                            <th>catégorie</th>
+                            <th>Quantité</th>
+                            <th>État du stock</th>
+                            <th>Prix d'achat</th>
+                            <th>Prix de vente</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+                <p class="text-default-ajouter-produit">Aucun produit disponible, veuillez en ajouter un</p>
+
+                <div class="container-ajouter-produit">
+
+                    <form action="" class="form-ajouter-produit">
+                        <legend>Ajouter un produit</legend>
+                        <label for="nom-produit">Nom du produit</label>
+                        <input type="text" id="nom-produit" name="nom-produit">
+
+                        <label for="id-produit">Id du produit</label>
+                        <input type="text" id="id-produit" name="id-produit">
+
+                        <label for="categorie-produit">Catégorie</label>
+                        <select id="categorie-produit" name="categorie-produit">
+                            <option value="" disabled selected>Selectionner une categorie</option>
+                            <option value="Électronique">Électronique</option>
+                            <option value="Alimentation">Alimentation</option>
+                            <option value="Automobile">Automobile</option>
+                            <option value="Vestimentaire">Vestimentaire</option>
+                            <option value="Autres">Autres</option>
+                        </select>
+
+                        <label for="quantite-produit">Quantité</label>
+                        <input type="number" id="quantite-produit" name="quantite-produit">
+
+                        <label for="etat-stock">État du stock</label>
+                        <select id="etat-stock" name="etat-stock">
+                            <option value="En stock">En stock</option>
+                            <option value="En rupture de stock">En rupture de stock</option>
+                        </select>
+                        <label for="prix-achat">Prix d'achat</label>
+                        <input type="number" id="prix-achat" name="prix-achat">
+                        <label for="prix-vente">Prix de vente</label>
+                        <input type="number" id="prix-vente" name="prix-vente">
+
+                        <button type="submit" class="btn btn-ajouter-produit">Ajouter le produit</button>
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="display-zone display-zone-commandes">
+
+            <nav class="nav-commande">
+
+                <div class="commande-total">0 commande</div>
+                <button class="btn-nav-commande-ajouter"><img src="icons/add.png" alt=""> Ajouter une commande</button>
+
+            </nav>
+
+            <div class="container-table-commande">
+                <table class="table-commande">
+                    <thead>
+                        <tr>
+                            <th>Id commande</th>
+                            <th>Nom du client</th>
+                            <th>Produits</th>
+                            <th>Quantité</th>
+                            <th>Prix total</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+                <div class="text-default-commande">Aucune commande disponible, veuillez en ajouter une</div>
+
+                <div class="container-ajouter-commande">
+                    <form class="form-commande">
+                        <legend>Ajouter une commande</legend>
+
+                        <div class="container-idProduit-client">
+                            <div>
+                                <label for="id-commande">Id commande</label>
+                                <input type="text" id="id-commande" name="id-commande" maxlength="7">
+                            </div>
+
+                            <div>
+                                <label for="nom-client">Nom du client</label>
+                                <input type="text" id="nom-client" name="nom-client" maxlength="15">
+                            </div>
+
+                        </div>
+
+                        <label for="produits-commande">Ajouter un produit</label>
+                        <div class="container-liste-bouton">
+                            <select name="produits-commande" id="produits-commande">
+                                <option value="" disabled selected>Sélectionner les produits</option>
+                            </select>
+
+                            <button class="btn-ajouter-produit-liste"><img src="icons/add.png" alt=""> Ajouter</button>
+                        </div>
+
+                        <label for="produits-ajoute-liste">Produits ajoutés</label>
+                        <div class="produits-ajoute-liste">
+                            <p class="text-default-produits-ajoute">Aucun produit ajouté</p>
+
+                        </div>
+
+                        <div class="container-prix-total">
+                            <span id="montant-prix-total">Prix total</span>
+                            <span id="prix-total">0.0</span>
+                        </div>
+
+                        <label for="date-commande">Date</label>
+                        <input type="date" id="date-commande" name="date-commande">
+                        <button class="btn btn-ajouter-commande">Ajouter la commande</button>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="display-zone display-zone-stocks">
+
+            <div class="container-stocks">
+                <h2>Inventaire</h2>
+                <div class="container-table-stocks">
+
+                    <table class="table-stocks">
+
+                        <thead>
+                            <tr>
+                                <th>Produit</th>
+                                <th>Catégorie</th>
+                                <th>Prix</th>
+                                <th>Stock</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                        </tbody>
+
+                    </table>
+                    <p class="text-default-stocks">Vous n'avez pas de produit en stock</p>
+                </div>
+            </div>
+
+            <div class="container-apercu-stock">
+                <h3>Vue d'ensemble</h3>
+
+                <div class="container-apercu-produits-stock">
+                    <div>
+                        <span>Total produits</span>
+                        <span id ="apercu-total-produits">00</span>
+                    </div>
+
+                    <div>
+                        <span>Total ventes</span>
+                        <span id = "apercu-total-ventes">00</span>
+                    </div>
+
+                    <div>
+                        <span>Dernière vente</span>
+                        <span id="apercu-derniere-vente">00</span>
+                    </div>
+
+                    <div>
+                        <span>Produits en stock</span>
+                        <span id="apercu-produits-stock">00</span>
+                    </div>
+                </div>
+
+                <div class="charts-apercu-produits-stock">
+                    <h3>Aperçu graphique</h3>
+                    <canvas id="chart-apercu-ventes" height="100%" width="100%"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="display-zone display-zone-ventes">
+
+            <div>
+
+                <div class="container-table-ventes">
+                    <h3>ventes</h3>
+                    <table class="table-ventes">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Nom du client</th>
+                                <th>Produits</th>
+                                <th>Quantité</th>
+                                <th>Prix Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    <p class="text-default-ventes">vous n'avez aucune vente pour l'instant</p>
+                </div>
+
+                <div class="container-apercu-ventes">
+                    <h3>Revenus récents</h3>
+
+                    <div class="container-apercu-produits-ventes">
+                        <div>
+                            <span>Coût achat</span>
+                            <span id="cout-achat-dom">00</span>
+                        </div>
+
+                        <div>
+                            <span>Revenus</span>
+                            <span id="revenus-dom">00</span>
+                        </div>
+                    </div>
+
+                    <div class="container-chart-apercu-ventes">
+                        <canvas id="chart-ventes" width="100%" height="100%"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="display-zone display-zone-clients">
+            <h2>pas d'information sur les clients</h2>
+        </div>
+
+    </section>
+
+    <section class="se-deconnecter-sec">
+        <div class="container-se-deconnecter">
+            <p>Voulez-vous vraiment vous deconnecter ?</p>
+            <div class="btns-se-deconnecter">
+
+                <button class="btn-se-deconnecter-ok">ok</button>
+                <button class="btn-se-deconnecter-annuler">Annuler</button>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="settings-sec">
+        <div class="container-setting">
+
+        </div>
+    </section>
+</body>
+
+</html>
